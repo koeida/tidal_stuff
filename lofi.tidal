@@ -1,0 +1,44 @@
+cps (1/8)
+
+hush
+
+d1 $ s "lfhh:0"
+
+d2 $ every 3 (fast 2) $ fast 2 $ s "<[hh hh] [hh*2 hh]>" # gain 0.85
+
+d3 $ every 3 (stut 4 0.85 (1/16)) $ s "bd ~ bd ~" # gain 0.85
+
+------------------
+
+d1 $ cat
+      [ slow 1 $ striate 64 $ s "lfhh:0"
+      , rev $ slow 1 $ striate 64 $ s "lfhh:0"
+      ] # gain "1.2"
+
+d2 $ slow 1 $ every 3 (fast 2) $ s "[[hh hh] hh] hh hh [~ hh hh] hh hh [hh hh] hh"
+  # gain "0.85"
+
+d3 $ every 5 (fast 2) $ fast 2 $ s "~ sd ~ sd" # gain "0.75"
+
+d4 $ every 3 (fast 2) $ fast 2 $ s "<[[bd bd bd] ~ bd ~][bd*4]>" # gain "0.75"
+
+d2 $ degradeBy 0.25 $ every 3 (0.25 <~) $ rev $ fast 2 $ striate 32 $ s "crow"
+
+d2 $ fast 4
+  $ stack [ every 3 (0.25 <~) $ s "bd(5,8)" # n "0 1 0 1 0"
+          , every 3 (fast 2) $ every 2 (0.25 <~) $ every 3 (rev) $ s "[hh hh] hh hh*3 hh"
+          , s "~ sd*2 ~ sd" # gain "0.85"]
+
+d1 $ every 3 (rev) $ slow 2 $ striate 128 $ s "lfhh:0"
+  # gain (scale 1 1.5 (fast 4 sine))
+  |+| gain 1.5
+
+d2 $ every 3 (rev) $ fast 2 $ striate 32 $ s "less" # cut "1" # gain "1.2"
+
+d3 $ every 3 (fast 2) $ fast 4 $ s "<[bd ~ bd ~] [bd*2 ~ bd*2 ~]>" # gain "1.2"
+
+d4 $ fast 4 $ s "[~ sd ~ sd]" # gain "1.2"
+
+d5 $ every 3 (fast 2) $ fast 4 $ s "hh hh hh hh" # gain "1.2"
+
+d6 $ silence

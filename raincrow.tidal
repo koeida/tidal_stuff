@@ -1,0 +1,35 @@
+cps 1
+
+hush
+
+d1 $ every 5 rev $ every 3 (fast 2) $ striate 4 $ s "crow:1" # gain 1.5 # speed (scale 0.80 1.0 (slow 16 $ sine))
+
+d2 $ stut 3 0.75 0.5 $ fast 1 $ s "crow*4" # n (run 4) # cut "1"
+
+d2 $ stack [
+  every 3 (fast 2) $ slow 4 $ s "[hh hh] hh hh hh"] # gain 1.5
+
+d3 $ slow 2 $ s "superchip*8"
+  # n (cat ["<[c3 d3  es3 g3 as2 c3 f3 c3]/4>",
+            "<[d3 es3 c3 as2]/2>"])
+  # gain "1.5"
+
+
+
+t2 (anticipateIn 4) $ s "" # gain 2
+
+
+
+d1 $ stut 2 1.2 0.25 $ s "[hh hh] hh hh hh" # gain 1.2
+
+do
+  let sd1 = "~ sd ~ [sd sd]"
+  d2 $ every 4 (slow 4 . (# speed 1.2)) $ s (cat [sd1, sd1, sd1, "sd sd sd [sd sd sd sd]"])
+
+d3 $ every 5 (|=| speed "1") $ slow 1 $ striate 8 $ s "[~ print:9] ~ print:10 ~" # gain 1.2 # cut "1" # speed "1.25"
+
+hush
+
+d1 $ slow 2 $ s "sn*3 sn sn*2" # n (run 8)
+
+d6 $ slow 2 $ sound "amencutup(3,8)" # n "18 20"  # shape (scale 0.15 0.65 saw) d5 $ every 8 (0.25 <~) $ every 4 (rev) $ n "18 6 30/2 0 5 22 20 6" # sound "amencutup" # shape (scale 0.15 0.55 saw)  # speed "[1, 0.999]" # gain 0.65

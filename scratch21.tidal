@@ -1,0 +1,152 @@
+setcps 1
+
+d1 $ s "" --every 3 (slow 2) $ striate "<4 8>/2" $ s "crow" # gain 1.25 # speed 1.0
+
+d2 $ stack [ s "~ 99bd" |*| gain "<0.9 1.25 0.9 1>"
+            , s "99sd/2 ~"
+            , s "cp/2 ~"
+            , fast 2 $ s "99hh 99hh <99hh 99hh 99hh:3>" |*| gain "1.2 0.8 1"] # room 0.15 # orbit 2
+
+d3 $ slow 16 $ euclid 5 8 $ striate 8 $ s "funeral:1" # lpf 500 # gain 1.2 # lpq 0.2 # cut 1
+
+hush
+
+
+---------
+
+hush
+
+setcps 1
+
+d2 $ stack [ s "99bd(3,8,2)" # n 4 |*| gain 1.2
+           , s "99sd/2 ~"
+           , s "cp/2 ~"
+           , fast "<1 1 1 2 1 1 1 4>" $ n "0 0 <0 1> 0" # s "99hh"] # room 0.2 # orbit 1
+
+d2 $ s ""
+
+d2 $ stack [ s "99bd:3*<1 1 1 8>"
+           , s "~ [99sd:3/2]"
+           , s "~ 99hh*<1 1 1 4> ~ 99hh*<1 2 8>"
+           , s "[~ cp/3] ~"
+           ] # room 0.2 # orbit 1
+
+d3 $ off 0.25 (# speed 0.75) $ slow "<16 8 32 8>" $ rev $ striate' 64 (1/64) $ s "idum"
+  # lpf (range 500 3000 (slow 8 sine)) # lpq 0.2
+  # speed "1"
+  # room 0.25
+  # orbit 0
+  # crush 4
+
+
+-----
+
+
+hush
+
+setcps 0.75
+
+d1 $ off 0.25 (# speed 0.75) $ every 3 (rev) $ slow "<1 1 2 1 1 4>" $ s "print(5,8,2)" # n (run 8)
+
+d1 $ slow 4 $ rev $ striate "<8 16>" $ s "funeral" # gain 1.2 # n "<9 10>" # lpf 500
+
+d2 $ stack [ s "99hh*<4 8 4 16>" # gain "{1 1 1 1.25}%8"
+           ] # room 0.25
+
+d3 $ s ""
+
+-------
+
+--arp(2)
+--808oh(5)
+--monsterb(6)
+--808bd(25)
+
+--ho(6)
+--v(6)
+--hmm(1)
+--baa(7
+
+setcps (138/60/2)
+
+d1 $ stack [ s "99bd:3*<<3 6> 1 1 1> ~"
+           , s "~ 99hh*<2 2 2 6>"
+           , s "~ cp/2"
+           , s "~ [~ ho/3]" # n (choose [0 .. 6])
+           ]
+
+d2 $ juxBy 0.5 (rev . fast 2) $ slow 2 $ every 3 (striate 8 . slow 4) $ s "monsterb(5,8,3)" # n (run 6) # cut 1 # lpf 2500
+
+d3 $ juxBy 0.5 (slow 2 . (# speed 0.75) . rev) $ s "v*<4 4 8>" # n (run 6)
+
+d4 $ rev $ slow 8 $ striate' 128 (1/8) $ s "hmm" # speed "<1.25 1 1.5 1>/4"
+
+d1 $ stack [ s "99bd*4" |*| gain "0.9 1.1 1 1.2" |*| gain 1.1
+           , s "~ 99sd*<1 1 1 2>"
+           , s "99hh*<8 8 8 16>" |*| gain "1.25 1 1 1 1.1 1 1 1"
+           , s "~ ~ 99hh:3/4 ~"
+           , s "~ cp/2"]
+
+d1 $ slow 2 $ stack [ s "99bd:2(5,8,2)" |*| gain 1.5
+                    , s "~ 99sd:2"
+                    , s "~ [[~ 99hh:1] 99hh:2/4]"
+                    ]
+
+d4 $ s ""
+
+d4 $ slow 2 $ juxBy 0.5 rev $ s "baa(3,4)" # n (run 4) # cut 1
+
+d5 $ whenmod 8 7 (const $ s "") $
+     stack [ s "~ 99snap ~ ~"
+           , s "99bd:12*2 ~" |*| gain 1.2
+           , s "~ 99sd:5/2"
+           , s "~ cp/2"
+           , s "99hh*<4 4 16>" |*| gain "1.25 1 1.1 0.9"]
+
+d6 $ whenmod 8 7 (const $ slow 2 $ rev $ striate 64 $ s "arp:0" |*| gain 1.5) $ s ""
+
+d7 $ s ""
+
+hush
+
+
+
+
+--------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+hush
+
+
+setcps 1
+
+d1 $ fast "<1 2 1 4>" $ striate "<4 8 2>" $ s "crow" # speed "<1 0.9>/4"
+
+d2 $ stack [ s "~ 99bd:2*<1 1 1 4>"
+           , s "[99sd,cp] ~"
+           , s "[~ 99hh*<1 2 1 4>] ~" ] |*| gain 1.2

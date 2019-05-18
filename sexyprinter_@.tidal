@@ -1,0 +1,47 @@
+cps 0.5
+
+hush
+
+solo $ d1 $ every 5 (0.5 <~) $ every 3 (0.25 <~)
+  $ every 5 (slow 2) $ every 3 (stut 2 0.9 (1/8)) $ fast 2
+  $ s "<print:2*2>"
+  # speed "<0.75 0.5 0.85 0.5>"
+  # lpf (scale 500 3500 (fast 2 sine))
+
+d2 $ every 3 (stut 2 0.9 (1/4)) $ s "hh*4"
+
+d3 $ s "<[~ sd ~ [sd sd]] [~ [sd sd sd] ~ sd]>"
+
+d4 $ every 3 (fast 2) $ slow 1 $ s "<cp [cp cp] cp [cp*2 cp*2]>" # n "<0 1 2 3 4>"
+
+t1 xfade $ sound "print:10"
+
+d1 $ every 2 (rev . (# speed "<0.5 0.75 0.5 0.85>/4")) $ striate "<8 16>/16" $ s "print:10"
+
+d2 $ slow 1 $ fast "<1 2>/16" $ stack
+  [ every 3 (0.25 <~) $ s "<[bd:1 ~ bd ~] [[bd*2] ~ bd:1 ~]>"
+  , every 3 (stut (choose [1,2]) 1.25 0.125) $ s "<[~ sd:1 ~ sd] [~ sd:2*2 ~ sd]>"
+  , s "hh*4"] # cut "-1" # gain 0.85
+
+d4 $ s "<super808 super808 super808*4 super808*4>/2" # n "0" # gain 1 # lpf 150
+
+hush
+----------------
+
+
+cps 1
+
+hush
+
+solo $ d2 $ slow "<1 2 2 4>" $ striate "<4 8 16 32>" $ s "print:10"
+  # speed "<0.5 1.25 0.85 1>/4"
+  |*| speed 0.5
+
+
+solo $ d3 $ every 8 (const (slow 2 $ s "<ontofull:0 ontofull:1>/2"))
+  $ every 5 (rev) $ every 3 (slow 2) $ s "onto:5*2" # speed "<0.95 0.85 1>" # cut "1"
+
+
+d1 $ slow 2 $ every 3 (slow 2 . stut 4 0.85 (1/8)) $ s "bd(5,8)" # n "<1 2 3 4 5>*16"
+
+d3 $ slow 8 $ s "super808*2 ~ super808 ~" # n "0" # gain 2 # lpf 500

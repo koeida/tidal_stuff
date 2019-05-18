@@ -1,0 +1,111 @@
+
+cps 1
+
+hush
+
+d1 $ s "bd*3"
+
+d2 $ s "{bd sd:1 sd}%4" # cut "1"
+
+-- misfits: she
+
+
+
+hush
+
+do
+  let v = s "superchip*8"
+  let c = s "superchip*8"
+
+  d1 $ cat [ cat [v,v,v,v] # n "<a2 a2 g2 a2>"
+           , cat [c,c] # n "<a2 g2 f2 g2>"
+           ]
+
+cps 0.9
+
+d1 $ s "superpiano*8" # n "<a2 a2 g2 a2>" # gain "1.1 1 1 1 1 1 1 1"
+
+
+
+do
+  let v = cat ["a2*8","a2*8","g2*8","a2*8"]
+  let c2 = cat [v, v, v, v]
+
+
+
+
+
+
+
+do
+
+  d1 $ guit
+
+  d1 $ ply 8 $ seqP [
+    (0, 16, n "<a2 a2 g2 a2>"),
+    (16,24, n "<a2 g2 f2 g2>"),
+    (24,28, n "<a2 a2 a2 a2>"),
+    (28,32, n "<a2 a2 g2 a2>"),
+    (32,36, n "<a2 a2 g2 a2>"),
+    (36,44, n "<a2 a2 g2 a2>"),
+    (44,48, n "<g2 a2 g2 a2>"),
+    (48,52, n "<a2 a2 a2 a2>")
+    ] # s "supersaw"  # room "1" # voice "0.1" # orbit "2"
+
+  d1 $ seqPLoop  [(0, 12, ply 8 $ n "<a2 a2 g2 a2>"), (12,20, ply 8 $ n "<a2 g2 f2 g2>")] # s "superpiano*8"
+
+hush
+
+
+
+--t1 $ s "superchip*8" # n "<a2 a2 g2 a2>"
+
+let guitcs = [ (24, n "<a2 a2 g2 a2>")
+             , (8, n "<a2 g2 f2 g2>")
+             , (4, n "<a2 a2 a2 a2>")
+             , (4, n "<a2 a2 g2 a2>")
+             , (4, n "<a2 a2 g2 a2>")
+             , (8, n "<a2 a2 g2 a2>")
+             , (4, n "<g2 a2 g2 a2>")
+             , (4, n "<a2 a2 a2 a2>")]
+
+cps 0.9
+
+hush
+
+d1 $ s "gtr*8" # n "2"
+  # up ("<-15 -15 -17 -15>")
+  # room "0"
+  # cut "1"
+
+
+d2 $ s "hh*8" # gain 1.25
+
+d3 $ s "bd ~ bd ~" # gain 1.25
+
+d4 $ s "~ sd ~ sd" # gain 1.25
+
+
+
+
+hush
+
+d2 $ s "~ superpiano" # n "a2" # gain 1.2
+
+
+
+
+do
+  hush
+  cps (-1)
+
+do
+  let seqN_internal n l = case l of [] -> []; ((c, pat):xs) -> (n, n + c, pat) : seqN_internal (n + c) xs
+  let seqN l = seqP $ seqN_internal 0 l
+  cps (0.8)
+  d1 $ ply 8 $ seqN guitcs # s "supersquare" # voice "0.1" # gain 1
+  d2 $ stack [ s "hh*8" # gain 1
+             , s "~ sd ~ sd"
+             , s "bd ~ bd ~"
+             ] |*| gain 1
+  d3 $ s "super808/4" # n "-5"

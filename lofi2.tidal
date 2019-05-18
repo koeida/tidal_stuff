@@ -1,0 +1,29 @@
+cps (1/11)
+
+hush
+
+d1 $ slow 8 $ every 2 rev $ striate' 128 (1/32) $ s "lfhh:1*4"
+  # delay 0.75
+  # delaytime 1
+  # delayfeedback 0.0
+  # lpf 500
+
+
+d2 $ every 2 (const (fast 4 $ s "[[cp cp] cp] cp? [cp cp] [cp [cp cp]]" # gain 0.8 # pan sine))
+   $ fast 2 $ every 3 (fast 2) $ stack [stut 2 1.25 0.125 $ every 3 (fast 2) $ s "hh*4"
+           , s "<[~ sd ~ sd] [~ sd*2 ~ sd*2]>"
+           , s "[bd] ~ [bd bd] ~"
+           , fast 2 $ s "future(5,8)" # n "0 1 2 3 4"
+           , s "less" # speed 0.75
+           ] # gain 0.85
+
+solo $ d1 $ randcat [ every 3 (rev . fast 2) $ slow 2 $ striate 64 $ s "lfhh:1"
+             , s "lfhh:1"
+             ]
+
+d2 $ every 2 (const (fast 4 $ s "[[cp cp] cp] cp? [cp cp] [cp [cp cp]]" # gain 0.8 # pan sine)) $ every 3 (fast 2) $ fast 2 $
+  stack [ stut 2 1.25 0.125 $ every 3 (fast 2) $ s "hh*4"
+        , s "<[~ sd ~ sd] [~ sd*2 ~ sd*2]>"
+        , s "bd:2(5,8)"
+        , fast 2 $ s "future(5,8)" # n "0 1 2 3 4"
+        ]

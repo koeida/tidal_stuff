@@ -1,0 +1,253 @@
+cps 1
+
+hush
+
+d1  $ juxBy 0.9 (# nudge "<0 0.05 0.1>/250")
+    $ juxBy 0.5 (fast 2.2)
+    $ up "[0 7 9]*8"
+    # sound "arpy" |*| speed "[1, 0.5]"
+    |+| nudge (scale 0 1 $ slow 38.1 tri)
+    |+| nudge (scale 0 1 $ slow 766.666 saw)
+    # crush (scale 16 7 $ slow 760 saw)
+    # lpf (scale 5000 2000 $ slow 583 sine) # lpq (scale 0.1 0 $ slow 81 sine)
+    # hpf (scale 30 60 $ slow 295 sine) # hpq (scale 0 0.4 $ slow 371 sine)
+    # begin (scale 0 0.3 $ slow 1213 sine)
+    # legato "18"
+    # up "<[0, 5] [2,9] [5,-2]>"
+    |+| speed (scale (-0.01) 0.01 $ slow 81 sine)
+
+
+hush
+
+d2 $ slow 2 $ s "hh arpy*2 jvbass*3" # cut "[1 [3 2]/2 1]/2"
+
+do
+  let chordRoots = "d5 e5 [a5 as5] gs5"
+  let chordProgression = slow 4 $ chordRoots + chord "sevenSus2 minor7 [minor major7 ] m7sharp9"
+  let scaleProgression = slow 4 $ "melodicMinor phrygian [minor lydian] melodicMinor"
+  d4 $ up (chordProgression + 5) #s "gtr" # n 0
+  d3 $ up ((scaleP scaleProgression "0 2 5 [4 7 2]") + (slow 4 chordRoots) +12) #s "gtr" # n 0
+
+hush
+
+
+
+d1
+  $ somecyclesBy (map (1/) [1..30]) (0.125 <~)
+  $ fast 8
+  $ s "arpy"
+  # cut 1
+  # begin (slow 200 $ saw)
+  # up (-9)
+  # att 0.01
+  # rel 2
+  # lpf 2000
+  # gain 2
+
+d1 $ superimpose  s "less" # speed 0.75 # room "1"
+
+hush
+
+d1 $ every 3 (0.25 <~) $ degradeBy 0.25 $ slow 2 $ s "amencutup*16" # n (run 30)
+d2 $ degradeBy 0.5 $ slow 1 $ s "<hh*16, bd*8>"
+
+d6 $ every 3 (rev . slow 2) $ slow 1 $ sound "amencutup(3,8)" #  n "18 20"  # shape (scale 0.15 0.65 saw)
+
+d5 $ every 8 (0.25 <~) $ every 4 (rev) $ n "18 6 30/2 0 5 22 20 6" # sound "amencutup" # shape (scale 0.15 0.55 saw)  # speed "[1, 0.999]"  # gain 0.65
+
+d1 $ superimpose ((# pan 1) . (# speed "[1,1.1]")) $ s "cp" # pan 0
+
+d1 $ slow 8 $ striate 16 $ stack [ sound "bd bd sd ~", sound "hh hh hh hh", sound "~ ~ ~ [cp cp]" ]
+
+d3 $ slow 2 $ sound "arpy*8" # up "0 7 10 12 19 15 14 12" # room 0.5 # orbit 1
+
+  
+d1 $ slow 8 $ striate (floor <$> (scale 0 16 (fast 8 $ sine))) $ s "bd bd bd bd"
+
+d1 $ slow 16 $ s "[<less,bd> [bd bd] ~] bd ~ [[bd bd bd] bd]"
+
+d1 $ slow 2 $ degradeBy 0.25 $ every 2 (fast 2) $ every 3 (rev) $ every 5 (0.5 <~) $ n (run 8) # s "[clubkick less <tech,crow> less]/2" # cut "-1"
+
+d2 $ degradeBy 0.25 $ slow 4 $ s "cp*32" # n (run 16) # pan sine
+
+hush
+
+d2 $ s ""
+
+d1 $ slow 4 $ s "[bd bd bd] bd bd bd"
+     
+     hush
+     
+     
+
+d2 $ degradeBy 0.5 $ s "hh*8"
+
+d3 $ degradeBy 0.25 $ s "[cp? cp] cp" # pan sine # gain 0.75
+
+
+d2 $ s "" --every 3 (fast 2) $ slow 2 $ s "[[cp cp cp] cp cp cp]"
+
+
+
+d2 $ slow 4 $ s "[supersaw!2] supersaw*2 ~ supersaw!3 [~ supersaw] supersaw"
+  # n "[c4 d4 f4 c4 f4 g4 c5 f4]/2"
+  # legato 1.1
+  # voice 0.25
+  # gain (fast 2 $ scale 0.75 1.25 sine)
+  # room 1
+
+d1 $ degradeBy 0.25 $ slow 4 $ s "[[supersaw!2] supersaw*2 ~ supersaw!3 [~ supersaw] supersaw]!2"
+  # n ((+ (-14)) <$> "[c4 d4 f4 c4 f4 g4 c5 f4]/2")
+  # legato 0.75
+  # voice 0.25
+  # gain (fast 2 $ scale 0.75 1.25 sine)
+  # room 1
+
+d3 $ up "<0 4 7 5 3 1 0>" # s "kpop"
+
+hush
+
+do
+  d1 $ up "<0 4 7 5 3 1 0>" # s "kpop"
+  d1 $ degradeBy 0.5 $ slow 2 $ striate 64 $ up "<0 4 7 5 3 1 0>" # s "kpop"
+  d2 $ striate 32 $ up "<4 7 5 0 7 4 3>" # s "kpop"
+  d3 $ fast 1 $ s "less"
+  d4 $ every 2 (fast 2) $ every 3 (rev) $ fast 2 $ s "[hh hh] hh hh hh"
+
+d1 $ degradeBy 0.25 $ striate 1 $ n (fmap (* 1) "[-20 -30 -30 -30 -30 -15 -15]") # sound "supersaw"
+
+d2 $ fast 2 $ n (fmap (+ (7)) $ "[-20 -30 -30 -30 -30 -15 -15]/4") # sound "supersaw"
+
+--sexy printer composition #1
+d3 $ fast 2 $ s "<less less less [less!3]>" # cut "1" # gain "1.05"
+
+d4 $ slow 4 $ striate 16 $ s "seawolf:3" # cut "2" # gain "1"
+
+d5 $ degradeBy 0.5 $ slow 4 $ n (run 16) # s "print" # cut "3" # gain "1.05"
+
+d6 $ slow 4 $ n (run 16) # s "print" # speed 0.5 # gain "1.05"
+
+
+
+hush
+
+do
+  let prog = "[1 0 2 5]/8"
+  let prog2 = "[-4 0 2 8]/16"
+  d1 $ striate 2 $ every 4 (|*| up (-3)) $ fast 2 $ s "arpy(3,8)" # up prog # voice "0.25" # room "0"
+  d2 $ fast 2 $ s "less" # up prog
+
+  d5 $ fast 1 $ s "<cp*4 cp*4 cp*3>"
+
+  d4 $ s "[bd bd bd] bd? [~ cp] bd"
+
+
+
+d3 $ slow 1 $ n "{0 10 7 8 2}%4"
+  # s "supersaw"
+  # shape "0.25"
+  # up "12"
+
+hush
+
+d1 $ sound "arpy*2 [~ arpy?] ~ arpy?" # up "[0 2 15 19]%8"
+
+d2 $ sound "bd:2(3,8)" # shape "0.7"
+
+d3 $ fast 1 $ striate 4 $ sound "less:0"
+
+d4 $ slow 4 $ striate 32 $ sound "ade:2" # speed 0.5 # shape 0.5-- # cut "1"
+
+d5 $ every 2 (fast 2) $ sound "<[hh? hh] ~ [hh*2]*2 [[hh hh? hh hh]*2]>" # gain 1.5
+
+d4 $ fast 1 $ every 3 (rev) $ sound "[[~ cp] cp]/2 cp? cp [[cp cp cp] cp]/2" # gain 1 # pan sine
+
+d1 $ fast 2 $ sound "bd"
+
+hush
+
+cps 1
+
+hush
+
+d1 $ slow 3 $ s "superpiano" # n "c3"
+  # sustain ""
+  # hold "1.5"
+  # decay "2"
+  # attack "0.1"
+
+do
+  let basso = n ((+0) <$> "[c3 g3]!8")
+  let h1 = n "[0 6 7 5]"
+  d1 $ slow 128 $ s "superpiano!64" # basso
+    # room "1"
+    # sustain "1"
+    # attack "0.2"
+    # gain (scale 0.75 1.25 sine)
+    
+  d2 $ slow 8 $ s "superchip!8" # basso
+    # voice "0.5"
+    # cut "2"
+    # gain 1
+  
+hush
+
+do
+  let sp = 16
+  let h = sp / 4
+  let att = sp / 8
+  let rel = sp / 8
+  let sus = sp / 2
+  let bstri = 8
+  d3 $ slow sp $ n "<[7 5 7 5 2 0] [7 5 2] [7 5 2] [7 5 2]>"
+    # s "superchip"
+    # hold h
+    # attack att
+    # sustain sus
+    # release rel
+    # gain "0.95"
+    # voice "0.25"
+    # speed "0.1"
+  --d3 $ slow bstri $ striate bstri $ sound "[bd:2 bd:2] bd bd bd"
+
+do
+  let sp = 32
+  let h = sp / 4
+  let att = sp / 8
+  let rel = sp / 8
+  let sus = sp / 2
+  let bstri = 8
+  let notes  = "c3 d3 f3 e3 f3 g3 a3 g3 e3 d3 c3"
+  let notes2 = "<[c3 e3 f3 a3 f3 e3 d3 f3 e3 d3 c3],[g3 e4 c4 a3 f3 e3 d3 f3 e3 d3 c3]>"
+  let notes3 = "c3 e3 d3 f3 c4 g3 a3 g3 e3 f3 c3"
+  let notes4 = "0 2 1 3 7 4 5 4 2 3 0" 
+  d1 $ slow sp $ n notes4
+    # s "superpiano"
+    # hold h
+    # release rel
+    # attack att
+
+
+hush
+
+d1 $ slow 2 $ sound "<[[~ bd] bd [bd bd] [~ [bd bd]]] [[bd bd] bd]>" # gain 1 # speed 0.25
+
+d2 $ every 3 (slow 2) $ sound $ cat ["[~ cp] cp cp cp","cp ~ cp [cp cp]"]
+
+
+d3 $ dubby
+
+let dubby = every 3 (fast 2) $ slow 2 $ sound "[~ print] ~ [print:1*2] [~ print:6]*2 print [~ print] [print:5*2] print:6"
+
+d4 $ jux (iter 8) $ every 3 ((|=| speed 0.85) . slow 2) $ slow 4 $ striate 32 $ sound "feelfx:2" # shape 0.95 # pan sine
+
+
+do 
+  let hkick = every 2 (fast 2) $ sound "[hardkick:4 ~] hardkick:4" # speed 0.75
+  let shifty s = every 5 (0.25 <~) $ every 3 (0.1 <~) $ s
+  let idum1 = degradeBy 0.0 $ slow 8 $ striate 64 $ sound "<idum idum:1>" # speed 1.0 # shape 0.5
+  let idum2 = shifty $ degradeBy 0.5 $ slow 8 $ striate 64 $ sound "<idum idum:1>" # speed 1.25 # shape 0.5
+  d6 $ stack [idum1]  
+  t6 anticipate $ stack [idum2, hkick] --, hkick, dubby]
+
+hush

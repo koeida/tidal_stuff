@@ -1,0 +1,127 @@
+do
+  d1 $ slow "<2 4 8>" $ striate "<32 64>" $ s "nloop:3" # gain (scale 0.75 2 (fast 2 sine))
+  d2 $ stack [ every 5 (slow 2) $ every 3 rev $ gain "<[~ 1 ~ 1*<4 4 8>][~ 1*<2 2 0> ~ ~]>" # s "99bd:1" # cut 2
+             , s "99sd*<1 3 1 4> ~ 99sd/2 ~"
+             , every 3 (const $ n "6? [~ 8*2] [8 ~] 4*8" # s "99hh") $ s "99hh:0*4"
+             ]
+
+
+hush
+
+cps 0.6
+
+d1 $ s "99bd:12"
+
+d1 $ gain "<[1][1 1 1 ~]>" # s "99bd:16"
+
+d2 $ superimpose (((1/128) <~) . (# n "<7 6>")) $ s "~ ~ [~ 1] ~" # s "99cpr:3"
+
+d3 $ fast 4 $ gain "<1*<4 8> 1*<4 16> ~ 1*2>" # s "99hh"
+
+d4 $ whenmod 24 12 (rev . (# up "-7")) $ slow "<4 8 16>" $ striate "<64 128>" $ s "nloop:13" # gain 1.4 # up "-14" # lpf 500
+
+d4 $ slow 8 $ striate 64 $ s "nloop:3"
+
+d5 $ s ""
+
+hush
+
+d1 $ s "transition"
+
+d1 $ s "<[99cpr*2 [99cpr*2 99cpr*4]] ~>" # gain (scale 0.75 1.25 saw)
+
+
+d1 $ s "99bd:15"
+
+cps (-1)
+
+setcps 0.8
+
+--This is pretty slick ambient stuff right here:
+--actually the whole practice I thought these were on different channels, but they aren't.
+do
+  d1 $ jux (# up "0") $ slow 64 $ striate' 256 (1/64) $ s "songone*2" # hpf (range 2000 3000 (slow 8 sine)) # gain 2 # up "-7"
+  d2 $ jux (# up "0") $ slow 64 $ striate' 256 (1/64) $ s "songone*2" # lpf (range 1500 3000 (slow 6 sine)) # gain 1.2 # up "-7"
+  d3 $ slow 4 $ s "99bd"
+
+hush
+
+do
+  d1 $ seqPLoop [(0,12, stack [ jux (# up "-7") $ slow 64 $ striate' 256 (1/64) $ s "songone*2" # hpf (scale 2000 3000 (slow 16 sine)) # gain 1.5 # up "0"
+                              , jux (# up "-7") $ slow 64 $ striate' 256 (1/64) $ s "songone*2" # lpf (scale 1500 3000 (slow 12 sine)) # gain 1.5 # up "0"
+                              ])
+                ,(12,16, stack [ jux (# up "-7") $ slow 512 $ striate' 1024 (1/16) $ s "songone*2" # hpf (scale 2000 3000 (slow 16 sine)) # gain 1.5 # up "5"
+                               , jux (# up "-7") $ slow 512 $ striate' 1024 (1/16) $ s "songone*2" # lpf (scale 1500 3000 (slow 12 sine)) # gain 1.5 # up "5"
+                               ])
+                ,(16,20,stack [ jux (# up "-7") $ slow 512 $ striate' 1024 (1/16) $ s "songone*2" # hpf (scale 2000 3000 (slow 16 sine)) # gain 1.5 # up "7"
+                              , jux (# up "-7") $ slow 512 $ striate' 1024 (1/16) $ s "songone*2" # lpf (scale 1500 3000 (slow 12 sine)) # gain 1.5 # up "7"
+                              ])
+                ,(20, 24, s "songone" # gain 0 # cut "-1")
+                ]
+
+
+do
+  d1 $ seqPLoop [(0,6, stack [ jux (# up "-7") $ slow 64 $ striate' 256 (1/64) $ s "songone*2" # hpf (scale 2000 3000 (slow 16 sine)) # gain 1.5 # up "5"
+                              , jux (# up "-7") $ slow 64 $ striate' 256 (1/64) $ s "songone*2" # lpf (scale 1500 3000 (slow 12 sine)) # gain 1.5 # up "5"
+                              ])
+                ,(6,12, stack [ jux (# up "-7") $ slow 512 $ striate' 1024 (1/16) $ s "songone*2" # hpf (scale 2000 3000 (slow 16 sine)) # gain 1.5 # up "7"
+                              , jux (# up "-7") $ slow 512 $ striate' 1024 (1/16) $ s "songone*2" # lpf (scale 1500 3000 (slow 12 sine)) # gain 1.5 # up "7"
+                              ])
+                ]
+
+
+
+do
+  d3 $ gain "<[1.4*<1 1 1 2> [~ 1.2] ~  ~][~ ~ ~ ~]>" # s "99bd:14" # cut "-1" # lpf 250
+
+
+  d7 $ stack [ s "<[~ 99sd:5*<1 1 1 2> ~ 99sd:5/2][~]>" # lpf 250 # gain 1.5
+             , s "<[~][99sd:5]>" # lpf 250 # gain 1.5
+             ]
+
+d5 $ s "" -- degradeBy 0.0 $ rev $ slow 4 $ striate' 8 (1/2) $ s "funeral:3*3" # lpf 3500 # cut "-1" # up "0"
+
+d6 $ s "" --degradeBy 0.5 $ rev $ slow 8 $ striate' 32 (1/4) $ s "willy" # hpf 250 # lpf 250 # gain (scale 1.0 1.5 (slow 2 sine)) # cut "-1"
+
+d4 $ s "99hh*<2>" # gain 0.5
+
+hush
+
+d6 $ slow "<8 4>" $ striate "<32 16 8>" $ s "seawolf" # lpf 500 # gain (scale 0.5 0.9 (slow 4 sine)) # up "<0 -2 -4 -2>"
+
+-------------------
+
+--modified version been workin on
+
+cps (0.75)
+
+hush
+
+do
+  d1 $ seqPLoop [ (0, 24, slow "<2 4 8>" $ striate "<32 64>" $ s "nloop:3" # gain (scale 0.75 2 (fast 2 sine)))
+               , (25, 26, s "transition" # gain 1.5)
+               , (26, 50, rev $ slow "<2 4 2 8>" $ striate "<64 128>" $ s "nloop:3" # gain (scale 0.75 2 (fast 2 sine)) # lpf (scale 500 6000 (slow 8 sine)) # lpq 0.2)
+               , (50, 52, s "<~ [99cpr*2 [99cpr*2 99cpr*4]]>" # gain (scale 0.75 1.25 saw))]
+  d2 $ seqPLoop [(0,24, whenmod 6 4 (const $ rev $ striate "<4 8 16 8 32>" $ s "<bassdm ~>" # gain 1.5)
+                    $ stack [ gain "<[1][1 1 1 ~]>" # s "99bd:16"
+                          , superimpose (((1/128) <~) . (# n "<7 6>")) $ s "~ ~ [~ 1] ~" # s "99cpr:3"
+                          , fast 4 $ gain "<1*<2 4> 1*<4 8> ~ 1*2>" # s "99hh"
+                          ])
+                ,(25, 26, s "")
+                ,(26, 50, stack [ every 3 (slow 2) $ s "<[99bd*<1 1 1 4> ~][99bd 99bd*<1 2>]>" # cut 2
+                                , ((1/128) ~>) $ slow 2 $ within (0, 0.5) (# gain (scale 0 1.4 (fast 0.5 saw))) $ s "[[~ 99sd*<4 8>] [99sd*<4 8> ~]] 99sd*<1 2>" # cut 2
+                                , s "99hh*<4>" # gain "1.2 0.9 1 0.8"
+                                ])
+                ,(50, 52, s "")]
+
+
+--------------------------
+
+hush
+
+cps (0.65)
+
+d1 $ slow 4 $ striate "<64>" $ s "<koy koy:1>" # cut 1 # lpf 1500
+
+d2 $ stack [ every 3 (slow 2) $ s "99bd:6(<5 5 3>,8)" # gain 0.7 # cut 2
+           , superimpose ((1/256) <~) $ gain "1(3,12)" # s "99sd:7" # cut 2 # gain 0.6]

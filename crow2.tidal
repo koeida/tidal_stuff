@@ -1,0 +1,74 @@
+cps (80/60)
+
+cps (-1)
+
+hush
+
+--Jam session with summer #2
+--Same as when we played, just with slightly more varied crows
+--and less rock-n-roll drums.
+
+d1 $ slow "<1 2>" $ cat
+  [ s "crow"
+  , striate "<4 8>" $ s "crow"
+  , rev $ striate "<4 8>" $ s "crow"
+  ] # n "<0 1 2 3>/2" # speed "<0.85 0.9>/16" # gain 0.9
+
+d1 $ slow 8 $ s "" # gain 0.65
+
+d2 $ silence
+
+
+
+hush
+
+--Make it longer (the new part).
+
+cps (-1)
+
+hush
+
+cps 1.25
+
+let p3 = gain "<1*4 1*4 [1*2 ~ 1*2 ~] 1*2>" # s "supersaw" # n "<c3 d3 c3 d3>/2"
+
+let p3 = gain "<1*4 1*4 [1*2 ~ 1*2 ~] 1*2>" # s "supersaw" # n "<c3 d3 c3 d3>/2"
+
+hush
+
+let p3 = gain "<1*4 1*4 [1*2 ~ 1*2 ~] 1*2>" # s "supersaw" # n "<c3 d3 c3 d3>/2"
+
+d1 $ stack [ s "supersaw" # n "0" --- # legato "<1 1 1 <1 1 1 8>>"
+                , s "bd <bd [bd bd]> ~ ~"
+                , s "[sd sd] ~ ~ ~"] # n 4 # gain 0.5
+
+hush
+
+cps (-1)
+
+cps 1.25
+
+d3 $ slow 2 $ seqPLoop [ (0,16, s "<supersaw(5,8) supersaw(5,8) supersaw(3,8)>" # n "<a2 cs3 e3 <d3 fs3 d3 fs3>>/2")
+                       , (16,32, stack [s "supersaw*8" # n "<a2 b2 e2 d2>/2", s "bd bd ~ ~", s "sd ~ ~ ~"])
+                       , (32,48, stack [ s "supersaw supersaw*2 supersaw supersaw*2" # n "<d2 fs3 <a2 a2 a2 e3> <e3 e3 g3 e3>>" # legato "<1 1 1 <1 1 1 8>>"
+                                       , s "bd <bd [bd bd]> ~ ~"
+                                       , s "[sd sd] ~ ~ ~" # n 4])
+                       , (48,51 , s "~")
+                       , (51,67, s "<supersaw(5,8) supersaw(5,8) supersaw(3,8)>" # n "<a2 cs3 e3 <d3 fs3 d3 fs3>>/2")
+                       , (67,83, stack [ s "supersaw*8" # n "<a2 b2 e2 d2>/2", s "bd bd ~ ~", s "sd ~ ~ ~"])
+                       , (83,99, stack [ s "supersaw supersaw*2 supersaw supersaw*2" # n "<d2 fs3 <a2 a2 a2 e3> <e3 e3 g3 e3>>" # legato "<1 1 1 <1 1 1 8>>"
+                                       , s "bd <bd [bd bd]> ~ ~"
+                                       , s "[sd sd] ~ ~ ~" # n 4])
+                       , (99,102 , s "~")
+                       , (102,118, p3)
+                       , (118,134, p3)
+                       ] # gain 1
+
+
+
+d4 $ every 3 (fast 2) $ slow 1 $ s "super808" # n "-10"
+  # lpf 500
+  # orbit 2
+
+
+d5 $ slow 2 $ s "<[~ ~ cp*3 ~]>" # gain 0.85 # pan sine # orbit 4

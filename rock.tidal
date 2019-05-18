@@ -1,0 +1,93 @@
+
+cps ((80/60))
+
+hush
+
+d1 $ every 3 (fast 2) $ slow 2 $ striate 16 $ s "crow:1" # speed "1.0"
+
+d1 $ rev $ slow 2 $ striate 64 $ s "<idum:0>"
+
+do
+  d1
+    $ slow 2 $ every 5 (fast 2) $ every 3 (0.25 <~)
+    $ s "[hh hh?] <hh?, [sd sd?]> [~ hh] <hh, sd>" # gain 2
+  d3 $ s "<[[~ bd:3] ~ [~ bd:1] ~] [less:1!8]>"
+    # gain (scale 1 1.5 (slow 4 $ sine))
+    # speed 0.75
+  d2
+    $ degradeBy 0
+    $ every 3 (0.25 <~)
+    $ every 5 (0.5 <~)
+    $ every 2 (|*| up "<7 5 3 3>*4")
+    $ every 3 (fast 2)
+    $ s "<[gtr:1*2 gtr:1*2 ~ gtr:1*2] [~ gtr:1 gtr [gtr gtr]] [gtr [gtr:1 gtr] gtr? [gtr*2 gtr]]>"
+    # cut "1"
+    # gain "[1 1.5 1 1.25]*2"
+    # room "0.95"
+    # lpf 3500
+    # crush "2"
+    # speed "0.25"
+    # orbit "1"
+    |*| gain 0.90
+  d6 $ rev $ slow 2 $ striate 64 $ s "<idum:0>"
+    # gain "2"
+    # speed "0.9"
+    # hpf (scale 500 2500 (slow 8 sine))
+  d7 $ every 3 (|*| up 2) $ slow 4 $ s "seawolf*16" # n (run 8) # speed "1"
+  d8 $ fast 2 $ s "industrial:5" # gain "1.5"
+
+hush
+
+
+-----------------------
+
+d2
+  $ degradeBy 0.25
+  $ every 3 (0.25 <~)
+  $ every 5 (0.5 <~)
+  $ every 2 (|*| up "<7 5 3 3>*4")
+  $ every 3 (fast 2)
+  $ s "gtr:1*2"
+  # cut "1"
+  # gain "0.75"
+  # room "0.15"
+  # lpf (scale 500 3500 (fast 8 sine))
+  # crush "2"
+  # speed "0.25"
+  # orbit "2"
+
+
+d6 $ rev $ slow 8 $ striate 64 $ s "<idum:0>"
+  # speed "0.9"
+  # hpf (scale 500 3500 (slow 8 sine))
+  # gain 1
+
+d8 $ fast 1 $ s "~" # n "5" # speed 0.5 # gain "0.5"
+
+d9 $ fast 2 $ s "" # up "<0 2 5 7 3>/4"
+  # gain (scale 0.5 0.65 (fast 4 sine))
+  # lpf "<500 1000 1500>"
+  # crush 4
+
+
+d1 $ fast 1 $ s "bd ~ ~ ~"
+
+d3 $ fast 1 $ s "<[~ ~ ~ sd] [~ ~ ~ ~] [~ ~ sd*<2 3> ~]>"
+
+d2 $ every 3 (rev) $ s "<[hh*3] [hh*<2 3> ~ hh? ~] [~ ~ ~ hh]>"
+
+d4 $ fast 2 $
+
+
+
+
+
+
+d3 $ s ""
+
+s "<[[~ bd:3] ~ [~ bd:1] ~] [less:1!8]>"
+  # gain (scale 0.75 1 (slow 8 sine))
+  # speed 0.75
+
+
+d7 $ s ""

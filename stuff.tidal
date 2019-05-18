@@ -1,0 +1,77 @@
+cps 0.075
+
+cps (-1)
+
+hush
+
+d1 $ seqPLoop [ (0, 20, s "gtr:1*4 gtr:1*2" # up "<0 2 5 -3 -2>/4" # delay 0.95 # delayfeedback 0.75)
+              , (20, 20, s "gtr:1*8" # up "<5 7 9 7 4>/4" # delay 0.25 # delayfeedback 0.75)
+              ]
+  # lpf "<500 1000 2000>"
+  # orbit 3
+  # crush 8
+  # gain 0.85
+
+
+  # bpf (scale 2000 6000 (slow 2 sine))
+
+
+
+d3 $ slow 1 $ striate 4 $ s "speech" # n "<1 2 3 4 5 6 7 8 9 10>"
+
+
+d4 $ slow 1 $ degradeBy 0.5 $ foldEvery [2,3,5,7] (0.25 <~) $ rev $ striate 128 $ s "funeral:1"
+  # lpf (scale 0 2000 (fast 2 sine))
+  # lpq (scale 0 0.45 (sine))
+  # crush 15
+  # speed 0.95
+
+hush
+
+d5 $ fast 8 $ s "<hh*8, bd*4>"
+
+d2 $ fast 16 $ s "~ ~ ~" # n "-20"
+
+
+--east:6: cool drum
+
+
+hush
+
+cps (40/60)
+
+d1 $ every 2 (rev) $ every 3 (0.125 <~) $ every 5 (0.25 <~) $ foldEvery [3, 5, 7] (fast 2) $
+  stack [ s "east:6 ~ east:6 ~"
+        , s "<[~ east ~ east] [east*4]>" # n "0 1 2"
+        , slow 4 $ s "~ sd ~ sd"
+        , s "<[hh*4] [[hh*2] hh hh hh]>"
+        ] # gain 1
+
+d2 $ every 2 (rev . (# speed 0.75)) $ slow 1 $ striate "<8 16>/4" $ s "print:10" # speed 0.8
+
+d1 $ slow 2 $ foldEvery [2,3,5] (fast 2) $
+     stack [ s "bd ~ bd ~"
+           , s "~ sd ~ sd"
+           ]
+
+
+d3 $ every 2 rev $ striate "<4 8>/4" $ s "pad:5" # speed "<0.75 0.8>/2" # gain (scale 0.5 1.25 (slow 2 $ sine))
+
+d4 $ slow "<2 4>/4" $ s "superchip*3 superchip superchip*2 superchip" # n ("<c4 e4 f4 <a4 e4>/4>/4")
+  # lpf 500
+  # voice "0.25"
+
+d5 $ striate 4 $ s "print:10" # lpf 1000 # speed 0.75
+
+d6 $ every 2 rev $ slow 4 $ striate 16 $ s "seawolf" # lpf 500
+
+
+------------------------
+hush
+
+cps 0.15
+
+d1 $ degradeBy 0.25 $ foldEvery [2,3,5,7] (0.125 <~) $ slow "<2 4>" $ striate "<32 64>"
+  $ s "idum:2" # lpf 1500
+
+d2 $ slow 1 $ striate 32 $ s "seawolf" # gain (scale 0.5 1 (fast 2 sine))

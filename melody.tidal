@@ -1,0 +1,34 @@
+cps 2
+
+hush
+
+d1 $ slow 2 $ s "supersaw(5,8)" # n ("12 12 7 5 5" + "<0 -7 -5>/3")
+
+d2 $ slow 2 $ s "supersaw(5,8)" # n ("12 12 7 5 5" + "<0 -7 -5>/3" - 12)
+
+d1 $ every 4 (stut' 2 0.25 (|*| gain "1.1")) $ s "bd ~ ~ ~"
+
+d2 $ every 3 (0.25 <~) $ every 2 (fast 2) $ slow 4 $ s "hh*4"
+
+d3 $ slow 4 $ s "~ [sd sd] ~ sd"
+
+d4 $ stut 1 0.75 0.5 $ every 5 (rev)
+  $ every 3 (fast 2)
+  $ slow 1
+  $ striate "4" $ s "<crow:0 crow:1 crow:2>" # voice "<0.25 0.5 0.75>"
+  # gain "1.25"
+
+hush
+
+d5 $ every 3 (fast 2) $ slow 4 $ s "<[cp*4] [cp*4] [cp*4] [cp*2 cp cp cp]>" # pan sine
+
+d6 $ slow 2 $ s "less" # lpf "500" # cut "1"
+
+let ns = n $ (+ "<1 2 3 4>") <$> "0 1 2 3"
+
+let drop n = fmap (+ (-n))
+
+
+d1 $ s "<[~ supersaw supersaw] [~ supersaw supersaw] [~ supersaw supersaw] [~ supersaw supersaw] "("<[~ 0 0] [~ 0 0] [~ 0 0] [~ 0 0] [~ 0 0] [0 ~ ~]>")
+    # s "supersaw"
+    # cut "1"

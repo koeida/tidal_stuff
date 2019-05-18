@@ -1,0 +1,62 @@
+-- Cutting out bass drum whenever sd happens to play
+
+cps 0.75
+
+d1 $ fast "<1 2>" $ s "99bd(3,4)" # cut 2
+
+d2 $ ((1/1024) ~>) $ every 3 (slow 2) $ s "99sd(<3 5>,8)"  -- # cut 2
+
+d3 $ s "99hh*<4 4 8>"
+
+hush
+
+--------------------
+
+do
+  d1 $ slow 8 $ striate 64 $ s "pegarp:3" # speed 0.4 # gain 1.2
+  d2 $ whenmod 16 14 (const $ s "<~ [99bd*4 99bd*8]>" # cut "-1") $ stack
+           [ every 8 (const $ s "") $ sometimes rev $ fast "<1 2>" $ s "99bd:10(3,4)>" # cut 2
+           , ((1/1024) ~>) $ every 3 (slow 2) $ s "99sd:13(<3 5>,8)" # cut 2
+           , slow 8 $ striate "<16 32 8 32>" $ s "<99hh*8>" # speed 0.1
+           , s "industrial:1*<4 8 8 16>" # gain (scale 1 1.4 (slow 4 sine))
+           , every 2 (const $ every 3 rev $ striate 8 $ s "print:9" # speed "<0.8 1 0.8>") $ s ""
+           ]
+
+
+
+do
+  d2 $ whenmod 16 14 (const $ s "<~ [99bd*4 99bd*8]>" # cut "-1") $ stack
+                        [ s "99bd(3,4)" # cut 2
+                        , ((1/1024) ~>) $ every 3 (slow 2) $ s "~ 99sd:13" # cut 2
+                        , s "industrial:1*<4 8>" # gain (scale 1 1.4 (slow 4 sine))
+                        ]
+  d1 $ slow 4 $ striate 32 $ s "pegarp:3" # speed 0.4 # gain 1.2
+
+
+d1 $ slow 8 $ striate "<16 32 8 32>" $ s "<99hh*8>" # speed 0.1
+
+
+---------------------
+
+----------
+
+
+hush
+
+cps (0.75)
+
+do
+  d1 $ slow "<2 4 8>" $ striate "<32 64>" $ s "nloop:3" # gain (scale 0.75 2 (fast 2 sine))
+  let tappy x = superimpose ((x ~>) . (degradeBy 0.75) . (# gain 1.1))
+  let tapback x = superimpose ((x <~) . (degradeBy 0.85) . (# gain 1.1) . (# n 8))
+  d2 $ whenmod 6 4 (const $ rev $ striate "<4 8 16 8 32>" $ s "<bassdm ~>" # gain 1.5)
+                $ slow "<1>" $ stack [ tapback (1/16) $ every 3 (slow 2) $ s "99hh*<8 16>" # gain 1 # n 0
+                                     , tappy (1/4) $ every 5 (rev) $ every 4 (slow 2) $ s "99bd:2(<3 5>,8)"
+                                     , tappy (1/8) $ every 3 (fast 2) $ s "<[~ 99sd][~ 99sd*2 ~ 99sd]>"
+                                     ]
+
+hush
+
+
+                        , (27, 51, rev $ slow "<2 4 8>" $ striate "<64 128>" $ s "nloop:3" # gain (scale 0.75 2 (fast 2 sine)))
+                        , (51, 53, s "<99snap*2 [99snap*2 ~ 99snap*2 ~]>" # gain 1)]

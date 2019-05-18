@@ -1,0 +1,81 @@
+cps 1
+
+hush
+
+
+d1 $ s "superpiano*8" # n "c3 d3 e3 g3" # up "-1" 
+  
+d2 $ slow 16 $ s "birds:1" # gain 0
+
+d1 $ slow 16 $ s "sitar*4" # n (run 4)
+
+d3 $ slow 4 $ s "supersaw*2"
+  # n "[cs2 e2]/2"
+  # gain (scale 1.0 2 (slow 8 sine))
+  # legato "1"
+  # sustain "2"
+  # lpf 1500
+
+d5 $ slow 4 $ s "supersaw*2"
+  # n "[cs2 d2]/2"
+  # gain (scale 1.0 2 (slow 8 sine))
+  # legato "1"
+  # sustain "1"
+  # lpf 1500
+
+d4 $ every 3 (fast 2) $ slow 4 $ s "<[bd bd] [[bd bd] [bd bd]]>" # gain "2"
+
+d2 $ stut 2 0.7 0.5 $ s "supermandolin*4"
+  # n "[-3 5 10 5]/8"
+  # legato "1"
+  # sustain "2"
+  # lpf (scale 1000 3500 (slow 6 sine))
+  # gain (scale 1.0 2 (slow 8 sine))
+  # up "0"
+
+d4 $ s "supermandolin*2"
+  # n "[0 2 7 3]/16"
+  # legato "1"
+  # sustain "2"
+  # gain "1.5"
+
+d4 $ every 2 (fast 2) $ s "supermandolin"
+  # n "[0 2 7 3]/32"
+  # legato "1"
+  # sustain "2"
+  # gain "1.5"
+  # up "7"
+
+d3 $ fast 1 $ s "hh hh hh hh" # gain 1.5
+
+d5 $ every 3 (fast 2) $ slow 2 $ s "~ sd ~ [sd sd]" # gain 1.5
+
+d9 $ every 3 (slow 2) $ s "<[~ bd ~ bd] [~ bd ~ [bd bd]]>" # gain 1.5
+
+hush
+
+d1 $ slow 4 $ striate 8 $ s "crow:1" # gain "0" # speed "1.0" # pan sine
+
+d4 $ degrade $ slow 4 $ s "crow:0 crow:1 crow:2 crow:3" # up "[0 7]/4" # gain "2" # speed 1.0 # cut "1"
+
+d2 $ every 5 (stut 2 0.75 0.5) $ every 3 (fast 2) $ slow 4 $ s "[hh hh] hh hh hh" # gain "0.75"
+
+d3 $ every 3 (stut 2 0.7 0.5) $ every 5 (fast 2) $ slow 8 $ s "~ sd ~ sd" # gain "1.5"
+
+d5 $ s "<[bd ~ bd ~] [bd*2 ~ bd ~]>" # gain "1.25"
+
+d6 $ every 3 (fast 2) $ slow 8 $ striate 4 $ s "less ~ ~ ~" # gain 0
+
+  d8 $ every 3 (slow 2) $ s "superchip*8" # n "[2 7 5 2]/4" # gain (scale 1.25 2 (slow 4 sine))
+
+do
+  d1 $ every 3 (fast 2) $ slow 16 $ s "print*12" # n (run 12) # cut "1" # gain "2" # speed "1.2"
+  d2 $ every 5 (fast 2) $ slow 8 $ s "print*12" # n (run 12) # up "-6" # gain "2" # cut "2" # speed "1.2"
+
+d3 $ slow 2 $ s "less" # gain "2"
+
+d4 $ slow 4 $ s "[bd bd] ~ bd ~" # gain "2"
+
+d5 $ slow 4 $ striate 8 $ s "seawolf" # gain "1.75"
+
+solo $ d9 $ slow 2 $ s "<[cp cp cp? cp] [[cp cp] [cp cp] [~ cp] cp]>" # gain "2" # pan sine

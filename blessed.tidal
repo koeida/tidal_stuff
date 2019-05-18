@@ -1,0 +1,7 @@
+cps 0.1
+
+d1 $ every 7 (0.5 <~) $ every 3 (0.125 <~) $ degradeBy 0.25 $ striate 32 $ sound "<funeral:0>"
+
+d2 $ fast 2 $ sound "bd cp [bd*4] [cp cp cp]"
+
+hush

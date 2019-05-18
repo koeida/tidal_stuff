@@ -1,0 +1,180 @@
+cps (20/60)
+
+hush
+
+d1 $ slow 4 $ gap 256 $ (s "lfhh:1" # speed 0.8)
+
+d1 $ slow 8 $ every 2 rev
+   $ striate' 256 (1/16) $ s "lfhh:0*3"
+    # gain 1.2
+    # hpf (scale 500 5000 (slow 4 sine))
+
+d1 $ degradeBy 0.5 $ slow 32 $ whenmod 6 3 (slow 2 . rev)
+   $ striate' 256 (1/16) $ s "lfhh:0*2" # lpf (scale 500 2500 (slow 2 sine))
+
+d2 $ s "~"
+
+
+
+cps 0.5
+
+d1 $ every 2 (rev) $ slow 8
+  $ striate 32 $ s "lfhh:3"
+  # lpf (scale 500 2500 (slow 4 sine))
+  # shape 0.75
+
+d3 $ whenmod 24 20 (const $ s "~") $ stack
+           [ s "hh*<8 8 16>"
+           , every 2 rev $ every 3 (fast 4)
+              $ s "<[kicklinn*2 ~] [kicklinn ~] kicklinn*4>"
+           , s "<[~ ~ sn:4*<1 1 2 2 3> ~] [~ sn:4*2 ~ sn:4]>"
+           , fast 2 $ s "<[~ cp] [~ cp*2] [~ cp*3 ~ cp] cp*4>" # n "<0 1 2 3 4>"
+           ]
+
+
+
+
+
+--This shit right here
+
+hush
+
+cps 0.1
+
+solo $ d1 $ every 2 (rev) $ slow 2 $ striate 64 $ (s "lfhh:3" # speed 1.2)
+
+d2 $ fast 4 $ whenmod 12 8 (const $ s "<~ ~ alphabet alphabet*4>" # n (run 8) # speed "<0.95 0.85>/4" # cut "1") $ stack
+  [ every 3 rev $ s "<[~ cp][~ [cp*2 cp] ~ [cp*3 cp]]>"
+  , every 4 (fast 2) $ s "bd(<2 3 5>,8)" # n "<0 1 2 3 4 5>*2" # gain 1.3 # cut "2"
+  , s "~ ~ sn:3 ~"
+  , every 3 (fast 4) $ s "hh*4"
+  ]
+
+---
+
+d2 $ whenmod 30 28 (const (s "~")) $ fast 2 $ stack
+                    [ s "~ cp" # speed 0.9
+                    , s "<[kicklinn ~ ~ ~][kicklinn ~ kicklinn*4? ~]>"
+                    , whenmod 8 7 (fast 2) $ s "~ ~ sn:3 ~"
+                    ]
+   # gain 0.8
+
+hush
+
+cps 0.2
+
+d1 $ stack
+  [ whenmod 12 10 rev $ slow 4 $ striate 64 $ s "lfhh:5" # gain 1.2
+  , s "<hh*4 hh*32>"
+  , s "~ ~ sn:3 ~"
+  , s "kicklinn ~ kicklinn*4? ~"
+  , s "<[~ cp][~ cp*8?][~ cp*16?]>"
+  ]
+
+
+
+--This one is also a hot jam
+hush
+
+cps (180/60)
+
+d1 $ gain "<[1 1.2][1 1.2][1 1.2][~ 1 ~ 1]>" # s "bass3" # n "0" # speed "<1 1 1 1.2 1.5 1.75 2>/16"
+
+d1 $ stack
+  [ gain "<[1 1.2][1 1.2][1 1.2][~ 1 ~ 1]>" # s "bass3" # n "0" # speed "<1 1 1 1.2 1.5 1.75 2>/16"
+  , whenmod 16 14 (slow 2) $ s "hh*2" # gain 1.25
+  , slow 4 $ s "<[kicklinn ~][kicklinn*2 ~][kicklinn ~][kicklinn ~] kicklinn*4>"
+  , slow 4 $ s "<[~ sd:4][~ sd:4][~ sd:4][~ sd:4 ~ sd:4]>" # n "1" # gain 1.25
+  , whenmod 12 10 (const $ fast (choose [1,2]) $ s "[cp ~]" # n "0" # gain 1.25) $ slow 2 $ s "~"
+  ]
+
+--------------
+
+hush
+
+d1 $ whenmod 20 16 (const $ (s "popkick*2" # cut 1)) $
+     stack [ every 4 (fast 2) $ s "gabba" # n 0
+           , slow 4 $ s "supersaw*<2 4>" # n ("<c4 e4 g4 <c4 c4 c4 a4>>" + 0)
+           ]
+
+cps 0.1
+
+hush
+
+----
+
+hush
+
+cps 0.8
+
+d1 $ every 3 (fast 2) $ s "supersquare(3,<4 8>)" # n "e5"
+
+d1 $ s "supersquare*8?" # n "<0 3 5 7 4 2 1 0>" # voice 0.05 # gain 0.9
+
+d2 $ gain "<1*3 1*4 1*4 1*8>" # s "supersquare" # n ("<0 3 5 7 4 2 1 0>" - "<5 5 5 7>/32")
+  # voice 0.5 # gain 0.9
+  # lpf (scale 500 3500 (slow 8 sine))
+
+
+d3 $ whenmod 17 12 (const $ s "tupe:4*8" # gain 2) $ stack
+  [ s "kicklinn*<2 2 2 4 0 8> ~" # gain 1.2
+  , s "<[~ cp] [~ cp] [~ cp] [~ cp*8] ~ [cp*3 cp*2]>"
+  ]
+
+
+
+----------------
+
+cps 0.1
+
+cps (-1)
+
+d1 $ striate 64 $ s "<dragon:0 dragon:1>"
+
+t1 (jumpIn' 0) $ slow 2 $ striate 128 $ s "dragon:1"
+  # lpf (scale 500 3500 (slow 2 sine))
+
+hush
+
+cps (-1)
+
+
+solo $ d1 $ slow 4 $ striate 128 $ (s "<dragon:1>" # speed 1) # gain 1.25
+
+d2 $ fast 4 $ stack
+  [ s "kicklinn*<4 8> ~" # gain 1
+  , s "~ ~ sn:4*2 ~"
+  , s "hh*<4 4 8 16>" # gain 1
+  , every 2 (fast 2) $ s "<[~ cp] cp*4 [~ cp] cp*2>"
+  ]
+
+hush
+
+d1 $ slow 1 $ striate 64 $ s "speedracer"
+
+-- Good crow thing
+
+cps 1
+
+d1 $ slow "<1 2 4>" $ every 2 (rev)
+  $ striate "<4 8 16>"
+  $ (s "crow" # n "<0 1 2 3 4>" # speed "0.85")
+
+d2 $ whenmod 24 16 (const $ s "~") $ stack
+  [ slow 1 $ s "<[~ cp][~ cp][~ cp][~ cp ~ cp*2] cp*2>"
+  , every 2 (const $ s "<super808 super808*4 super808 super808*2>" # n 0) $ s "~" # gain 0.8
+  , s "<[bd ~ bd ~] [bd*2 ~ bd ~] [bd ~ bd*2 ~] bd*4>"
+  ]
+
+d3 $ every 3 (fast 2) $ s "hh*4" # gain 1.2
+
+--end good crow thing
+
+
+cps 0.5
+
+hush
+
+d1 $ s "superchip" # n "<0 9 8 6 11 11 13 8 11 12 9 11 6 3 5 0>"
+
+--

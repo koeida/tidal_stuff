@@ -1,0 +1,26 @@
+
+
+-- Good crow thing from 11/23 performance
+
+cps 1
+
+hush
+
+d1 $ slow "<1 2 4>" $ every 2 (rev)
+  $ striate "<4 8 16>"
+  $ (s "crow" # n "<0 1 2 3 4>" # speed "0.85")
+
+d2 $ whenmod 24 16 (const $ s "~") $ stack
+  [ slow 1 $ s "<[~ cp][~ cp][~ cp][~ cp ~ cp*2] cp*2>"
+  , every 2 (const $ s "<super808 super808*4 super808 super808*2>" # n 0) $ s "~" # gain 0.8
+  , s "<[bd ~ bd ~] [bd*2 ~ bd ~] [bd ~ bd*2 ~] bd*4>"
+  ]
+
+d3 $ stack
+  [ every 3 (fast 2) $ s "hh*2" # gain 1.2
+  , every 5 (fast 2) $ s "bd ~"
+  ]
+
+--end good crow thing
+
+hush

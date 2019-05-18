@@ -1,0 +1,18 @@
+cps 0.25
+
+d1 $ slow 2 $ n (run 16) # sound "industrial"
+
+d2 $ every 3 (rev) $ slow 2 $ sound "bd bd [bd sn] bd"
+t2 anticipate $ sound "cp*3 cp"
+
+d3 $ every 3 (fast 2) $ slow 4 $ sound "cp*8" # pan sine
+
+d4 $ every 5 (0.5 <~) $ every 3 (0.25 <~) $ degradeBy 0.25 $ every 2 (fast 2) $ n (run 12) # sound "speakspell"
+
+d5 $ fast 2 $ sound "[bd bd bd] sn sn cp" # gain 1.5
+
+hush
+
+
+
+hush

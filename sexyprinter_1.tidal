@@ -1,0 +1,14 @@
+cps 1
+
+hush
+
+d1 $  stack [ every 2 (const (s "" # n "0" # gain 2 # lpf 1500)) $ fast 2 $ s "<less less less [less!3]>" # gain 1.5 # cut "1"
+        , slow 4 $ striate 16 $ s "seawolf:3" # cut "2"
+        , every 2 (rev) $ degradeBy 0.5 $ slow 4 $ n (run 16) # s "print" # cut "3"
+        , slow 4 $ n (run 16) # s "print" # speed 0.5 # gain 1.2
+        , every 3 (rev) $ s "[hh hh hh] hh? hh [hh hh]" # gain "1"
+        ]
+
+d1 $ stack [ --every 2 (rev) $ degradeBy 0.5 $ slow 4 $ n (run 16) # s "print" # cut "3"
+           slow 4 $ n (run 16) # s "print" # speed 0.5 # gain 1.2
+           ]

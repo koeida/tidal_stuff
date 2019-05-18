@@ -1,0 +1,91 @@
+-- this was good summer recorded it
+
+hush
+
+setcps (127/60)
+
+d1 $ slow 2 $ stack
+           [ sometimes rev $ slow "<1 2 1 4>" $ s "superchip(3,8,2)" # legato 0.5 # n (cP "[]" "notes") # voice 0.1 # lpf (range 500 3500 $ slow 8 sine) # lpq (range 0 0.2 $ slow 16 sine)
+           , s "~ superchip ~ superchip*<1 2 1 4>" # legato 1 #  n (cP "[]" "notes" - "<12>") # voice 0.1 # lpf (range 500 3500 $ slow 4 sine)
+           ] # room 0.25 # orbit 1 |*| gain 1.2
+
+
+d2 $ stack [ whenmod 12 8 (const $ s "99bd:4*<4 4 8 2>") $ s "99bd:4*<1 1 1 2> ~" |*| gain "<0.95 1.2 1 1.1>"
+           , s "99sd/2"
+           , s "cp/2"
+           , s "hh hh 99hh:3 hh" |*| gain "1.2 1 1 1"
+           ] # gain 1 # room 0.25 # orbit 1
+
+--------------
+
+setcps 0.75
+
+d1 $ fast 1 $ stack [ s "~ supersquare ~ supersquare" # legato 1.5 # n (cP "[]" "notes") # lpf 2000 # lpq 0.15
+                    , s "supersquare*<1 1 2> ~ supersquare/2 ~" # legato 1 # n (cP "[]" "notes") - "14" # voice 0.1
+                    ] # gain 0.6
+
+d2 $ stack [ s "99bd" # lpf 500
+           , s "~ 99sd:3*1"
+           , s "~ cp/3"
+           , s "~ [~ 99hh*<1 2>]" # n "<0 0 0 4>"] # room 0.25 # orbit 1
+
+do
+  let drop p = whenmod 26 20 (const $ p)
+  d2 $ drop (s "99hh*<4 4 4 8 4 8>" # room 0.25 # orbit 1) $
+       stack [ s "99bd(3,8)" # lpf 500 # gain "1 0.9 "
+             , s "99sd:3"
+             , s "cp/2"
+             , s "99hh 99hh 99hh:3 99hh"] # room 0.25 # orbit 1
+
+
+hush
+
+
+setcps (128/60)
+
+
+
+
+
+
+--
+
+--- This was the jam with mushka here
+
+hush
+
+setcps 0.75
+
+
+do
+  let quiet p = whenmod 12 8 (const $ p)
+  let crow = slow 2 $ fast "<1 2>" $ sometimes (# up "-5") $ every 3 rev $ rev $ striate "<2 8 2 16>" $ s "crow" # n "<0 1 2>/4" # hpf 3500 # hpq 0.2 |*| gain 0.8
+  let drums = stack [quiet (s "") $ "99bd(<3 5>,8)" # gain "<1.2 1 1.1 0.95>", quiet (s "") $ s "~ 99sd/2", quiet (s "") $ s "~ cp/2", s "99hh*<4 8 4 16>" # gain "1 1.2 1 1.1"]
+  let bassy = striate 8 $ s "peg" # lpf 500 # gain 0.75 # up "<0 1>/2"
+  let singing = rev $ slow "<16>" $ striate "<32 64>" $ s "res" # lpf (range 500 2000 $ slow 8 sine) # lpq (range 0 0.1 (slow 4 sine)) # cut 1 # gain 1.2
+  let singing2 = slow "32" $ striate "<32>" $ s "res" # cut 2 # gain 0.6 # lpf 500
+  d1 $ stack [crow, drums, bassy, singing]
+
+
+
+-----------
+
+hush
+
+--we did this with and without the superimpose
+
+setcps (135/60)
+
+d1 $ fast 1 $ stack [ superimpose (slow "<16>" . rev . (# up "-14") . (# legato 0.5)) $ fast "<1 1 1 2>" $ s "<[supersquare*<1 1 2> ~][supersquare*<1 1 2> ~][supersquare*<1 1 2> ~][supersquare ~ supersquare*2 ~]>"
+                        # legato 1 # n (cP "[]" "notes") # lpf (range 2000 3000 (slow 8 sine)) # lpq 0.15
+                    --, sometimes rev $ s "[~ supersquare] ~" # legato 0.5 # n (cP "[]" "notes") - "14" # voice 0.1
+                    ] # gain 0.8
+
+
+d2 $ stack [ slow "<2 2 2 4>" $ s "99bd:4(<3 3 5>,8,2)" |*| gain "{1.2 0.95 1.1 1}%8"
+           , s "~ 99sd:12/2"
+           , s "~ cp/4"
+           , s "99hh*<1 1 4>/2"
+           ]
+
+d3 $ s "" -- slow 16 $ rev $ striate 64 $ s "99arpys:12*4" # lpf 500 # gain 0.8

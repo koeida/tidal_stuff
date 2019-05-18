@@ -1,0 +1,44 @@
+hush
+
+cps 0.5
+
+d1 $ s "ontofull:0"
+
+d1 $ every 8 (const (s "ontofull:1")) $ every 3 (fast 2) $ fast 1 $ s "ontofull:1(3,8)" # cut 1 # speed "<0.8 0.85 0.75>/8" |*| speed 0.9
+
+d1 $ silence
+
+d1 $ slow 1 $ s "supernoise*64"
+  # (n (run 32)) |-| n 50 # cut "1"
+
+hush
+
+do
+  d2 $ slow 1 $ s "less*2 ~ less ~" # cut "2"
+  d3 $ slow 2 $ s "~ [sd sd] ~ [~ sd]"
+  d4 $ every 3 (rev) $ fast 2 $ s "<hh*3 [[hh hh] hh hh] [hh [hh hh] hh]>"
+
+
+d1 $ slow 1 $ cat [
+  s "ontofull",
+  s "~",
+  s "onto",
+  s "onto",
+  s "onto",
+  s "onto"
+  ] # n "<0 0 0 1 2 3>" # cut "-1"
+
+d2 $ s ""
+
+d1 $ slow 2 $ s "onto:1"
+
+hush
+
+d2 $ slow 4 $ s "gtr(4,6)"
+  # n "<1 2 3 4>"
+  # up ((+ (-24)) <$> "[12 12 7 7 5 2 0 0]/2")
+  # lpf 2000
+  # crush "3"
+  # cut "1"
+
+d3 $ slow 2 $ cut 0.5 0.1 $ s "less" # gain 1.5

@@ -1,0 +1,12 @@
+cps 1
+
+hush
+
+d1 $ slow "<1 1 2 4>" $ every 2 (rev) $ striate "<8 16>" $ s "crow"
+
+d2 $ stack
+  [ s "hh*4"
+  , every 2 (slow 2) $ s "<[~ cp][~ [cp*2 cp]][~ cp][~ cp*2]>"
+  , s "bd ~"
+  , s "~ sd"
+  ]

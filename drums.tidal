@@ -1,0 +1,8 @@
+
+d1 $ whenmod 12 10 (const $ s "99bd:1*4") $ s "99bd:1(5,8)"
+
+d2 $ sometimes (fast 2) $ s "hh*2 hh 99hh:1 hh"
+
+d3 $ s "cp"
+
+hush

@@ -1,0 +1,38 @@
+d1 $ stack
+  [
+    s "bd(5,8)" -- # nudge "[0.01 0.04 0 0]"
+  , s "hh*4" # nudge "[-0.15 0 0 0]"
+  ]
+
+d2 $ sometimes rev $ sometimes (# nudge "0.15") $ n (scale "minPent" "0 .. 5") # sound "superpiano" # voice "0.1"
+
+hush
+
+  -- # nudge "[0 0.04]*4"
+
+
+  ----------------
+
+hush
+
+setcps 0.8
+
+d1 $ s ""
+
+d2 $ every 4 (const $ slice 8 "<3 2>*<8 2 4>" $ s "idum" # cut 1 # lpf 1500)
+  $ stack [ gain "1 ~" # s "99bd"
+          , s "~ 99sd"
+          , sometimes (# nudge "-0.02") $ s "99hh*<4 8 4>" # gain (choose [0.9, 0.8, 1.1, 1])
+          , s "99hh" # cut 1 # gain 0
+          , superimpose (slow "<2 4 8>" . rev) $ fast "<2 1>" $ n (scale "minPent" "0 .. 5") # sound "supersquare"
+            # voice (choose [0.1, 0.2, 0.3]) # lpf (range 500 3000 (slow 2 sine)) # lpq 0.2 # crush 2
+            # gain 0.8
+          ]
+
+
+----------
+
+
+setcps 0.75
+
+d1 $ s "[bd*2, [~ sd], [~ hh ~ hh]]"

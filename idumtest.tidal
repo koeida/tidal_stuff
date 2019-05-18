@@ -1,0 +1,33 @@
+cps 0.1
+
+hush
+
+d1 $ sound "<idum:0 idum:1>"
+
+d1 $ every 5 (0.125 <~) $ every 3 (0.25 <~) $ degradeBy 0.25
+  $ slow 1 $ rev $ striate 64 $ sound "<idum:1>" # cut "1" # speed "<1>"
+
+d2 $ every 7 (const (s "cp*4") ) $ every 3 (rev . (fast 2) . (0.25 <~)) $ fast 2 $ stack [
+  sound "bd bd [bd bd]*2 [[bd*2] bd?]",
+  sound "[cp*2] [[cp*3] cp cp? cp] [cp*2] cp" # pan sine] # gain 1
+
+d1 $ every 7 (0.125 <~) $ every 5 (0.5 <~) $ every 3 (0.25 <~) $ degradeBy 0.25 $ striate 64 $ sound "<idum:0 idum:1>"
+
+d3 $ every 3 (fast 2) $ every 3 (rev) $ every 3 (0.25 <~)
+  $ fast 2 $ stack [sound "bd bd [bd bd]*2 [[bd*2] bd?]", sound "<[[cp*2] [[cp*3] cp cp? cp] [cp*2] cp] [cp*4]>"]
+  # pan sine
+  # gain 0.85
+
+hush
+
+
+
+d1 $ every 3 (0.5 <~) $ degradeBy 0.25 $ striate 16 $ sound "<idum:0 idum:1>"
+
+
+
+d3 $ fast 1 $ sound "cp [cp*2] cp cp"
+
+d1 $ every 3 (rev) $ every 5 (0.5 <~) $ every 3 (slow 2) $ sound "cp*4 [cp cp]" # pan sine
+
+d2 $ sound "[bd bd bd] bd"

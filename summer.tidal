@@ -1,0 +1,18 @@
+cps 0.5
+
+hush
+
+d1 $ every 3 (fast 2) $ s "supersaw(5,8)" # n "[0 7 2 4]/8"
+  # lpf (scale 500 3500 (slow 8  sine))
+  # gain 2
+  # up "7"
+
+d5 $ s "supersaw*4" # n "[0 7 2 4]/4" # gain 1.5 # up "7"
+
+d2 $ s "hh hh hh hh" # gain "2"
+
+d3 $ s "<[~ [sd sd] ~ sd] [~ sd ~ [sd sd sd]]>" # gain "2"
+
+d4 $ every 3 (fast 2) $ s "<[[bd bd] ~ bd ~] [bd bd bd bd]>" # gain "2"
+
+d6 $ slow 2 $ s "less" # gain "2"

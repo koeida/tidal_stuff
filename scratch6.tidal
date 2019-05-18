@@ -1,0 +1,547 @@
+cps 1
+
+d1 $ slow 2 $ striate' 32 (1/8) $ s "peg*2" # up "<0 2 5 7 2 0>" # gain 0.65
+
+d5 $ slow 2 $ striate' 16 (1/3) $ s "peg" # up ("<0 2 5 7 2 0>" + "<5 7 2>") # gain 0.65
+
+d2 $ slow 4 $ gain "[1 ~ 1/7][1 ~ 1/2][1 ~ 1/3][1 ~ 1/5]" # s "hh" # n "0" # gain 1.2
+
+d3 $ slow 4 $ gain "~ 1 1/3" # s "99sd" # gain 1.2
+
+d4 $ slow 4 $ gain "1 1/4" # s "99bd:3"
+
+hush
+
+------------------
+
+hush
+
+d1 $ slow 8 $ rev $ striate 64 $ s "pegarp:1"
+
+d2 $ slow 1 $ stack
+                    [ gain "[1 0 1/4][1 0 1/3][1 0 1/5][1 0 1/7]" # s "hh"
+                    , fast 2 $ gain "1 1/3" # s "99bd:1"
+                    , fast 2 $ gain "[~ ~ 1]" # s "99sd"]
+
+
+-----------------------
+--FINALLY GOT THE FUNERAL SAMPLE TO WORK
+--the e function is the shitttttt
+--"Ahll hooie -- hoo-ie arr!!"
+
+hush
+
+:t pan
+
+cps 0.5
+
+d1 $ fast 2 $ stack
+  [ e 4 6 $ within (0, 0.25) rev $ zoom (0.3, 1) $ (every 2 rev $ striate' 64 (1/32) $ s "funeral:4"
+    # up "<-2 -3 -7 -5>/4")
+    # lpf (scale 500 2500 (slow 4 sine))
+    # lpq 0.2
+    # cut 2
+  , fast 2 $ gain "<[1 ~ 1/9][1 ~ 1/3][1 ~ 1/5][1 ~ 1/7]>" # s "99hh:4"
+  , every 2 (fast 2) $ gain "1 1/3 ~" # s "99bd"
+  ]
+
+d1 $ stack
+      [ every 3 (fast 2) $ fast 2 $ gain "<[1 ~ 1/9][1 ~ 1/3][1 ~ 1/5][1 ~ 1/7]>" # s "99hh:15"
+      , jux (rev . (# up "-3")) $ e 12 18 $ rev $ striate' 128 (1/128) $ s "funeral:3" # lpf (scale 500 2500 (slow 2 sine))
+      , fast 2 $ s "99bd:12 99bd:12/3"
+      , s "~ ~ 99sd*<1 2 2 3>"
+      ]
+
+d2 $ slow 4 $ striate 128 $ s "peg" # up "<-7 -5>" # lpf (scale 500 2500 (slow 8 sine)) # crush 3
+
+hush
+
+------
+-------------
+
+--fuckin sickkkkk
+
+
+hush
+
+cps 0.5
+
+d1 $ fast "<2 1>/12" $ stack
+  [ e 4 6 $ within (0, 0.25) rev $ iter "<6 2 12>/4" $ zoom (0.1, 1) $ (every 2 rev $ striate' 64 (1/16) $ s "funeral:4"
+    # up "<-2 -3 -7 -5>/4")
+    # lpf (scale 500 2500 (slow 4 sine))
+    # lpq 0.2
+    # cut 2
+    # orbit 3
+    # room 0.75
+  , whenmod 12 11 (const $ s "99bd 99bd 99bd 99bd 99bd*2 99bd*4" # gain 1.2) $ s ""
+  ]
+
+d2 $ whenmod 12 8 (const $ s "") $ stack
+  [ fast "<2 2 4>" $ gain "<[1 ~ 1/9][1 ~ 1/3][1 ~ 1/5][1 ~ 1/7]>" # s "99hh:4" # orbit 1
+  , slow "<0.5 1 2>" $ gain "<[1.2(2,3) 1(5,6)][1.2*2 1*2 1*2]>/2" # s "99bd:1" # orbit 4 # room 0.25
+  , slow "<4 4 2>" $ s "super808" # gain 1.2
+  ]
+
+---- end fuckin sick
+
+d1 $ juxBy 0.5 ((# hpf 1500) . (# lpf 3000)) $ slow 16 $ stack
+    [ zoom (0.1, 1) $ (rev $ striate' 64 (1/7) $ s "funeral:4"
+      # up "<0 -2 -5 -3>/4")
+      # lpf (scale 500 2500 (slow 4 sine))
+      # lpq 0.2
+      # orbit 3
+      # room 0.0
+      # delay 0.75
+      # delaytime 4
+      ]
+
+d2 $ stack [slow 16 $ gain "1.2" # s "super808"]
+
+--------------------
+
+cps 0.5
+
+hush
+
+d2 $ slow 1 $ gain "[1.2 ~ 1/3][1.2 ~ 1/3][1.2 ~ 1/3][1.2 ~ 1/3]" # s "bubble:0" # cut 3 # pan sine # n (run 12)
+
+d1 $ stack [ degradeBy 0.2 $ e 5 8 $ iter 8 $ striate 64 $ s "lfhh:3" # cut 1
+           , degradeBy 0.1 $ e 3 8 $ iter 12 $ striate 32 $ s "lfhh:3" # cut 2
+           , whenmod 12 11 (const $ gain "1 1 1 1 1 1 1*2 1*4" # s "cp" # gain 1) $ s ""
+           ] # up "<0 -5>/12"
+
+
+d2 $
+  [ gain "[1.2 ~ 1/3][1.2 ~ 1/3][1.2 ~ 1/3][1.2 ~ 1/3]" # s "bottle:0" # cut 3 # pan sine
+  , gain "[1.2 1/3] [~ 1/5] ~" # s "99snap"
+  , gain "1/5 [1 1/3]" # s "99cpr"
+  , every 2 (fast 2) $ jux rev $ gain "1*2 1/3" # s "99bd"
+  , gain "[~ 1/3] [1 ~ ~ 1/4]" # s "99sd"
+  ]
+
+
+hush
+
+d3 $ stack [ degradeBy 0.1 $ fast 2 $ e 5 8 $ iter 8 $ rev $ striate' 64 (1/128) $ s "dragon:1" # cut "-1" # up "<-5 -12>/12" # gain 1.1
+           , s "99bd:1 99bd:1/4"
+           , s "~ 99sd*<1 1 4>"
+           ]
+
+
+----------------
+
+hush
+
+cps (140/60)
+
+d1 $ stack [ slow 2 $ every 3 (slow 2) $ gain "<[1*4] [1*8] [1*4] [1 ~ 1*2]>" # s "" # pan sine
+           , every 8 (fast 4) $ gain "<[1.2 ~]>" # s "99bd:3"
+           , slow 2 $ gain "[1.5 ~ 1/3][1.25 ~ 1/5][1.2 ~ 1/3][1.2 ~ 1/3]" # s "99hh" # cut 1
+           ] # gain 0.9
+
+d2 $ slow 32 $ striate' 32 (1/32) $ s "dragon:1" # cut 2
+
+
+---------------
+--this is the shit
+
+hush
+
+cps 1
+
+d1 $ whenmod 48 24 (# speed 0.9) $ stack [ degradeBy 0.1 $ e 5 8 $ iter 4 $ striate' 64 (1/64) $ s "idum:0" # cut 1
+           , degradeBy 0.1 $ e 3 8 $ iter 4 $ striate' 64 (1/64) $ s "idum:1" # cut 2 # lpf 1500]
+
+d2 $ whenmod 24 20 (const $ s "99bd:1") $
+     stack [ gain "[1.2 ~ 1/3][1.2 ~ 1/3][1.2 ~ 1/3][1.2 ~ 1/3]" # s "99hh"
+           , every 5 (const $ gain "1*<1 2> 1*<2 2 3>" # s "cp") $ gain "[1.1 1/7] 1/3" # s "99bd" # cut 3
+           , every 8 (const $ gain "1*8" # s "99bd" # cut 3) $ s ""
+           , gain "~ 1*<1 1 2>" # s "99sd"
+           , slow 2 $ striate 16 $ s "peg" # up "<0 -2>/2" # gain (scale 0.75 0.9 (slow 4 sine))
+           ]
+-----
+
+hush
+
+do
+  d1 $ stack [ degradeBy 0.1 $ e 5 6 $ iter 4 $ striate' 64 (1/64) $ s "idum:1" # cut 2 # lpf 1500]
+  d2 $ stack [ slow 2 $ gain "[1 ~ 1/4]" # s "99bd:1" ]
+
+
+------------
+
+
+
+hush
+
+do
+  cps (-1)
+  cps 0.5
+
+
+-- your very first crow song
+cps 1
+
+d1 $ seqPLoop [ (0,68, whenmod 3 2 (const $ e 5 8 $ striate "<8 4>" $ s "crow" # n "<0 1 2 3 4>" # speed "<0.7 0.6 1.1>" # cut 1) $
+                     stack [ slow 2 $ s "99hh*4"
+                           , slow "<1 2>" $ every 4 rev $ striate "<8 8 16>" $ s "crow:3"
+                           , s "99bd*<1 1 2> 99bd/4"
+                           , s "~ 99sd*<1 2>"
+                           , s "cp cp/2"
+                           ])
+              , (68, 70, s "99bd:1*<4 2>")
+              , (70, 102, s "<[crow*4] [crow:2] ~ ~ [crow crow] [crow:2] ~ ~>"  # cut 1)
+              ]
+
+
+--------------
+
+--Good enough that summer started singing.
+
+hush
+
+cps 1.5
+
+d1 $ e 5 6 $ iter 8 $ striate 64 $ s "pegarp:1"
+
+d3 $ e 3 6 $ iter 8 $ striate' 64 (1/32) $ s "pegarp:1" # up "-7" # cut 2
+
+d2 $ whenmod 12 8 (const $ s "") $
+  stack [ fast 2 $ s "99hh ~ 99hh/3" # gain 1.2
+        , slow 2 $ s "{99bd:4(3,6), 99bd:4(7,12)}"
+        , slow 2 $ gain "<[~ 1*1][~ 1.2*3][~ 1*1][~ 1.2*2]>" # s "99sd" |*| gain 1.2
+        ]
+
+
+---------------------
+
+hush
+
+cps 0.75
+
+d1 $ whenmod 18 16 (const $ s "hh(13,16)") $
+     stack [ s "99snap(5,8),99snap(3,8)"
+           , every 3 (fast 2) $ fast 2 $ s "99sd*<1 1 2> ~"
+           , s "hh*8"
+           , s "~ bd"
+           , degradeBy 0.1 $ e 5 16 $ rev $ (iter 8 $ striate 64 $ s "funeral:3" # up "<0 3 5 4 2>/4") # cut 1
+           --, degradeBy 0.1 $ e 3 8 $ rev $ (iter 8 $ striate 32 $ s "dragon:1" # up "<0>/4") # cut 2
+           ]
+
+---------------
+
+cps 1
+
+d1 $ every 2 (slow 2) $ striate 8 $ s "crow"
+
+d2 $ s "99bd*<1 1 2 4>"
+
+d3 $ s "~ 99sd"
+
+d4 $ s
+
+
+-----------------
+
+hush
+
+d1 $ e 3 8 $ iter 8 $ striate' 16 (1/32) $ s "pad:2" # up "<0 -3 -5 -2>/4"
+
+d2 $ slow 4 $ e 5 8 $ iter 8 $ striate' 16 (1/32) $ s "pad:2" # cut 1 # up "<-3>"
+
+d3 $ seqPLoop [(0, 14, s "reverbkick"),
+               (14, 16, s "reverbkick*4")
+               (16, 32, s "")
+              ]
+
+d3 $ whenmod 16 8 (const $ s "") $
+     stack [ slow 4 $ gain "[1 ~ 1/4][1 ~ 1/3][1 ~ 1/4][1 ~ 1/3]" # s "99hh"
+           , gain "1 1/7 ~" # s "reverbkick" |*| gain 0.9
+           ]
+
+
+d2 $ whenmod 16 8 (const $ s "") $
+     stack [ gain "1 1/7 ~"# s "reverbkick",
+             slow 2 $ gain "[1 ~ 1/4][1 ~ 1/7][1 ~ 1/4][1 ~ 1]" # s "99hh",
+             gain "1/7 1/2 1/4" # s "99sd"
+           ]
+
+
+-------------
+
+
+
+hush
+
+d1 $ slow 4 $ rev $ striate "<8 16>" $ s "peg" # up "<0 -5>/4" # cut 1
+
+d2 $ slow 8 $ whenmod 16 12 (const $ gain "1.4" # s "super808*<1 1 2>") $
+              stack [ gain "1.4" # s "super808*<1 1 2>"
+                    , gain "[~ 1*<1 1 4>] 1/2 ~ 1/3" # s "99sd"
+                    , gain "1*<16 16 32>" # s "99hh"
+                    , gain "1(5,8)" # s "99hh:2"
+                    , fast 2 $ gain "1(3,8)" # s "99hh:1"
+                    ]
+
+d3 $ slow 4 $ every 4 (const $ s "<cp*4 [cp*2 cp*2] [cp ~ cp ~]>") $ s ""
+
+
+-------------
+
+hush
+
+d1 $ rev $
+  stack [ slow 2 $ striate' 256 (1/32) $ s "ravemono:1"
+        , slow 4 $ striate' 256 (1/8) $ s "ravemono:1"
+        ] # gain 0.5
+
+d3 $ slow 2 $ whenmod 16 12 (const $ gain "<[1 ~ 1/3 ~][1 ~ 1/3 1/7][1 ~ 1/3 ~][1*2 ~ 1*2 ~]>"
+                                   # s "reverbkick" # gain 1.4) $
+              stack [ gain "<[1 ~ 1/3 ~][1 ~ 1/3 1/7][1 ~ 1/3 ~][1*2 ~ 1*2 ~]>" # s "reverbkick" # gain 1.4
+                    , gain "~ 1/4 ~ 1*<1 2>" # s "cp" # gain 1.4
+                    , gain "[1 ~ 1/4][1 ~ 1/7][1 ~ 1/4][1 ~ 1/7]" # s "99hh" # gain 1.4
+                    , gain "1(3,8)" # s "99hh:1" # gain 1.2
+                    , gain "1(4,16)" # s "99hh:2" # gain 1.2
+                    ]
+
+------------------
+
+--this was pretty awesome duders
+
+hush
+
+cps (80/60)
+
+d1 $ s ""
+
+d2 $ stack [ slow 4 $ e 5 8 $ iter 8 $ rev $ striate' 64 (1/8) $ s "funeral:5" # gain 1.1 # cut 1
+           , slow 4 $ e 3 4 $ iter 8 $ rev $ striate' 128 (1/64) $ s "funeral:3" # gain 1.1 # up "0" # cut 2
+           ] # lpf (scale 500 3000 (slow 8 sine)) |*| gain 1.1
+             # lpq (scale 0 0.2 (slow 16 sine))
+
+d3 $ whenmod 34 24 (const $ s "") $ whenmod 12 10 (const $ gain "<[1 ~ 1 ~] 1*4>" # s "99bd:2" # gain 1.4) $
+     stack [ every 3 rev $ slow 2 $ gain "[1(5,8),1(3,8)]" # s "99bd:2"
+           , whenmod 6 4 (const $ s "") $ every 5 rev $ gain "<[~ 1*<1 1 2>][~ 1*2][~ 1][1*4]>" # s "99sd"
+           , every 7 (fast 2) $ s "hh*4" # gain 1.2
+           ]
+
+d4 $ s "supersaw*4" # n "e2" # gain 1.2 # voice 0.2
+
+hush
+
+-------------
+
+hush
+
+cps 0.6
+
+d4 $ s "<[supersaw(3,4)][supersaw(3,4)][supersaw*4][supersaw*4]>" # n "<c2 d2 c2 d2 a2 a2 a2 a2>/4" # gain 1.2 # voice 0.2 # up "14"
+
+d1 $ whenmod 16 12 (const $ s "") $
+     stack [ s "99bd:4*<1 1 1 2> ~"
+           , gain "<[~ 1][~ 1*2][1/7 1][1/3 1]>" # s "99sd:3"
+           , s "hh*4"
+           ]
+
+d2 $ slow 16 $ striate 32 $ s "arp:3*<1 2>" # gain "<0.9 0.9 1>" # up "<0 2 0 4>"
+
+-------------------
+
+--last chill number
+
+--Upgraded at second practice. Came to me in a dream.
+
+hush
+
+
+cps 0.8
+
+d1 $ stack [ degradeBy 0.1 $ every 3 (rev) $ slow 2 $ striate 16 $ s "breaks125:1"
+           , s "99hh:4*4"
+           , slow 2 $ s "99bd:3*<1 1 2>" # gain 1
+           ]
+
+d4 $ seqPLoop [(0, 44, degradeBy 0.1 $ whenmod 4 2 (fast 2) $ slow 2 $ e 5 8 $ iter 8 $ rev $ striate' 32 (choose [1/32, 1/16, 1/64]) $ s "<idum:1 idum:0>" # cut 1 # gain 1.3)
+              ,(24,44, slow 8 $ rev $ striate' 32 (1/16) $ s "<idum:1 idum:0>" # cut 2 # gain 1.3 # lpf (scale 500 1000 (slow 8 sine)))
+              ,(44,48, degradeBy 0.1 $ whenmod 4 2 (fast 2) $ slow "<2 2 2 1>" $ e 5 8 $ iter 8 $ rev $ striate' 32 (choose [1/32, 1/16, 1/64]) $ s "<idum:1 idum:0>" # cut 1)
+              ,(48,60, s "")
+              ,(56,60, s "99bd:3*<2 2 4 8>")
+              ]
+
+--------------------------
+
+--This worked pretty nice as a chill ending
+--You don't need to destroy every sample lol
+
+hush
+
+cps 0.8
+
+d1 $ stack [ fast 2 $ gain "<[1 ~ 1/4][1 ~ 1/7][1 ~ 1/2][1 ~ 1/7]>" # s "99hh:4"
+           , gain "1 1/4" # s "99bd:3"
+           , fast 2 $ gain "~ 1*<1 1 1 2>" # s "99sd:0"
+           ]
+  |*| gain 0.6
+
+d2 $ stack [ slow 16 $ striate 64 $ s "pegarp:2"
+              # lpf (scale 500 2000 (slow 8 sine)) # gain 1 # cut 2
+              # lpq (scale 0 0.2 (slow 4 sine))
+           ]
+
+d2 $ stack [ e 3 8 $ iter "<8 16 32>/3" $ striate' 64 (1/64) $ s "lfhh:2" # cut 1
+           , every 3 (fast 2) $ slow 16 $ every 4 rev $ striate 64 $ s "lfhh:3" # lpf 500 # cut 2 # up "1"
+           ]
+
+
+----------------------
+
+
+
+hush
+
+d1 $ s "hh:1"
+
+hush
+
+cps (-1)
+
+cps (120/60)
+
+
+
+-- This right here is the shit.
+
+d2 $ seqPLoop [ (0,  16, striate "<2 4 4 1 6>" $ gain "1" # s "dubby" # up "<0 2 3 5>/4" # cut "-1")
+              , (16, 20, stack [ s "<~ 99bd:7*8 99hh*8 99hh*16>"
+                               , s "<~ seawolf seawolf:1 seawolf:2>" # cut "3"
+                               ])
+              , (20, 40, stack
+                  [ gain "1" # s "dubby(5,8)" # cut "-1"
+                  , s "99bd:7*<1 1 2 4>" # gain 1.2 # cut "3"
+                  , gain "<[~ 1 ~ 1/4][~ 1*2][~ 1 ~ 1/8][~ 1*2]>" # s "99sd:5"
+                  , s "<[99hh:2*4][99hh:2*8][~][99hh:2*3]>"
+                  ])
+              ]
+
+
+
+--lets try some different shitttttt
+
+
+hush
+
+cps (-1)
+
+cps (120/60)
+
+
+
+d1 $ slow 8 $ striate 64 $ s "<seawolf:0 seawolf:1 seawolf:2>"
+
+d3 $ slow 8 $ s "99bd:6*4"
+
+d2 $ striate "<2 4 4 1 6>" $ s "dubby" # up "<0 2 3 5>/4" # cut "-1"
+
+d2 $ striate "<2 4 4 1 6>" $ gain "1" # s "dubby" # up "<0 2 3 5>/4" # cut "-1"
+
+hush
+
+do
+  hush
+  cps (-1)
+  cps (120/60)
+  d4 $ stack [ s "<99bd:7*8 99hh*8 99hh*16 99hh*16 99hh*16 99hh*16 >"
+             , s "<seawolf seawolf:1 seawolf:2 ~ ~ ~ ~>" # cut "3"
+             ]
+
+hush
+
+do
+  hush
+  cps (-1)
+  cps (120/60)
+  d4 $ stack [ s "99bd:7*<1 1 2 4>" # gain 1.2 # cut "3"
+             , gain "<[~ 1 ~ 1/4][~ 1*2][~ 1 ~ 1/8][~ 1*2]>" # s "99sd:5"
+             , s "<[99hh:2*4][99hh:2*8][~][99hh:2*3]>"
+             , s "<dubby*2 dubby(3,8) dubby(3,8) dubby(3,8)>"
+            ]
+
+do
+  hush
+  cps (-1)
+  cps (120/60)
+  d4 $ s "99bd:6"
+
+d5 $ slow 8 $ striate 64 $ s ""
+
+hush
+
+do
+  hush
+  cps (-1)
+  cps (120/60)
+  d2 $ seqPLoop [ (0, 16, striate "<2 4 4 1 6>" $ gain "1" # s "dubby" # up "<0 2 3 5>/4" # cut "-1")
+              , (16, 20, stack [ s "<~ 99bd:7*8 99hh*8 99hh*16>"
+                               , s "<~ seawolf seawolf:1 seawolf:2>" # cut "3"
+                               ])
+              , (20, 24, s "seawolf" # cut 3 # gain 0)
+              , (24, 40, s "99bd:6*1" # gain 1.2 # cut "3")
+              , (40, 48, s "dubby(3,8)") --actually start at 40
+              , (40, 48, stack [ s "99bd:7*<1 1 2 4>" # gain 1.2 # cut "3"
+                               , gain "<[~ 1 ~ 1/4][~ 1*2][~ 1 ~ 1/8][~ 1*2]>" # s "99sd:5"
+                               , s "99hh:2*<4 8>"
+                               ])
+              , (48, 64, striate "<2 4 4 1 6>" $ gain "1" # s "dubby" # up "<0 2 3 5>/4" # cut "-1")
+              , (64, 68, stack [ s "<~ 99bd:7*8 99hh*8 99hh*16>"
+                               , s "<~ seawolf seawolf:1 seawolf:2>" # cut "3"
+                               ])
+              , (68, 88, stack
+                  [ every 5 (striate 8 . slow 4) $ s "dubby(3,8)"
+                  , s "99bd:7*<1 1 2 4>" # gain 1.2 # cut "3"
+                  , gain "<[~ 1 ~ 1/4][~ 1*2][~ 1 ~ 1/8][~ 1*2]>" # s "99sd:5"
+                  , s "<[99hh:2*4][99hh:2*8][~][99hh:2*3]>"
+                  ])
+              ]
+
+
+hush
+
+-- dubby striated 1-6, up
+-- 99sd:5
+-- 99hh:2
+-- 99bd:6
+-- seawolf
+
+d2 $ slow 1 $ stack [ s "99bd:7*<1 1 2 4>" # gain 1.2
+                    , s "99hh:2*<4 8 0 3>"
+                    , striate "<1 4 2 4>/3" $ s "dubby" # up "<0 2 <3 5> <5 3>>/4" # cut 2
+                    , s "<[~ 1][~ 1/4][~ 1][~ 1/3]>" # s "99sd:5"] # orbit 4
+
+d2 $ slow 1 $ stack [ s "99bd:7*<1>" # gain 1.2
+                    , s "99hh:2*4"
+                    , slow 2 $ s "dubby*<2 2 2 4>" # cut 2
+                    ] # orbit 4
+
+d2 $ slow 2 $ stack [ s "99hh:2*2"
+                    , s "99bd:7*<1>" # gain 1.0
+                    ] # orbit 4
+
+d1 $ slow "<8 8 16>" $ striate 64 $ s "seawolf" # up "<0 0 -2 -4 -2>"
+
+
+hush
+
+----------------------------
+
+cps (40/60)
+
+hush
+
+d1 $ e 5 8 $ iter "<1 3 6 9 12 15 18>" $ every 3 (rev) $ striate 64 $ s "lfhh:1" # gain 2 # cut 1
+
+d2 $ e 3 8 $ iter "<5 10 15 20 25 30 35 40>" $ every 3 (rev) $ striate 32 $ s "lfhh:1" # gain 2 # cut 1
+
+solo $ d2 $ stack [ gain "1 ~ 1/7 ~" # s "99bd" # gain 0.8
+           ]
+-------------

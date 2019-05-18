@@ -1,0 +1,12 @@
+cps 0.5
+
+hush
+
+d1 $ every 2 (rev . (# speed "<0.5 0.85>/4")) $ striate "<8 16>/16" $ s "print:10"
+
+d2 $ slow 2 $ fast "<1 2>/16" $ stack
+  [ every 3 (0.25 <~) $ s "<[bd:1 ~ bd ~] [[bd*2] ~ bd:1 ~]>"
+  , every 3 (stut (choose [1,2]) 1.25 0.125) $ s "<[~ sd:1 ~ sd] [~ sd:2*2 ~ sd]>"
+  , s "hh*4"] # cut "-1"
+
+d3 $ whenmod 8 16 (const (s "less*2")) $ s "~"

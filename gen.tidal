@@ -1,0 +1,13 @@
+cps (-1)
+
+cps 1
+
+hush
+
+d1 $ s "supersaw" # n "<0 -3 -6 -6 -9 -7 -7 -5 0>" # voice "0.1" # crush "4" # lpf 500 # gain "0.75"
+
+d2 $ slow 1 $ s "~ [sd sd] ~ [sd sd]"
+
+d3 $ slow 1 $ s "hh*8"
+
+d2 $ silence

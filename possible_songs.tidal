@@ -1,0 +1,17 @@
+
+--- This was the jam with mushka here
+
+hush
+
+setcps 0.75
+
+
+do
+  let quiet p = whenmod 12 8 (const $ p)
+  let crow = slow 2 $ fast "<1 2>" $ sometimes (# up "-5") $ every 3 rev $ rev $ striate "<2 8 2 16>" $ s "crow" # n "<0 1 2>/4" # hpf 3500 # hpq 0.2 |*| gain 0.8
+  let drums = stack [quiet (s "") $ "99bd(<3 5>,8)" # gain "<1.2 1 1.1 0.95>", quiet (s "") $ s "~ 99sd/2", quiet (s "") $ s "~ cp/2", s "99hh*<4 8 4 16>" # gain "1 1.2 1 1.1"]
+  let bassy = striate 8 $ s "peg" # lpf 500 # gain 0.75 # up "<0 1>/2"
+  let singing = rev $ slow "<16>" $ striate "<32 64>" $ s "res" # lpf (range 500 2000 $ slow 8 sine) # lpq (range 0 0.1 (slow 4 sine)) # cut 1 # gain 1.2
+  let singing2 = slow "32" $ striate "<32>" $ s "res" # cut 2 # gain 0.6 # lpf 500
+  d1 $ stack [drums]
+  --d1 $ stack [crow, drums, bassy, singing]

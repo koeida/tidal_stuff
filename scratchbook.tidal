@@ -1,0 +1,67 @@
+hush
+
+setcps (137/60)
+
+setcps (127/60)
+
+--HOUSE
+
+d1 $ s "99bd"
+
+
+
+hush
+
+do
+  let sil p = whenmod 32 28 (const $ p)
+  let drop n = speed (range 1 0.5 $ slow n $ saw)
+  let lpfs l h s = lpf (range l h (slow s sine))
+  let onlywhen n1 n2 s' = whenmod n1 n2 (const $ s') $ s ""
+  let humanize = nudge (choose [-0.010, -0.009..0.01])
+  let kd = sil "" $ s "[99bd:3] ~ ~ ~" # humanize |*| gain "<1.2 0.9 1 0.9>"
+  let sds = sil "" $ s "99sd:3/2" # humanize
+  let claps = sil "" $ ((1/16) <~) $ s "cp:0/2" # humanize
+  let chh = s "hh hh*<1 1 1 2> 99hh:12/2 hh" |*| gain "{1 1 1 1.2}%4"  # humanize
+  let progression =  "<c2'maj>" + "<0 5 7 5>/34"
+  let bassg_inst = s "supersaw" # voice 0.01 # lpfs 500 1000 8 # lpq 0.1 # room 0.5 # orbit 1 |*| gain 0.75 # attack 0 # release 1 # sustain 1
+  let bassline = sil "" $ slow "<2 4 2>/4" $ n "<f2(5,8) g2(5,8)>/2" # bassg_inst
+  let scaley = sil "" $ superimpose (rev . slow 2) $ slow "<8>" $ n (scale "minor" "-21 .. -14") # bassg_inst
+  let ccs = whenmod 32 28 (const $ s "cc*<2 2 4 0>" # gain "<0.85 1 1.1 0>" # cut 7) $ s ""
+  let chor1 = sil "" $ degradeBy 0.0 $ slow "<16 8>/4" $ rev $ striate 16 $ s "idum" # hpf 2500 # cut 5 |*| gain 1.25
+  let chor2 = sil "" $ slow "<32>" $ rev $ striate' 32 (1/8) $ s "idum" # lpf 500 # cut 3 # room 0.5 # orbit 1
+  d1 $ s "" -- stack [kd, sds, claps, chh, bassline, chor2, chor1] # shape 0.5
+  d2 $ stack [kd, sds, claps, chh] # shape 0.5
+  d3 $ stack [bassline] # shape 0.5
+  d4 $ stack [chor2, chor1] # shape 0.5
+
+
+  --d1 $ stack [kd, sds, chh, claps] # shape 0.5
+
+  d2 $ s "" --bassline # room 1 # orbit 1
+  d3 $ s "" --sil "" $ superimpose (rev . fast "<2 4 2 8>/8" . ((1/256) <~)) $ slow 32 $ scaley # sound "supersaw" # voice "0.2" # attack 0.25 # release 0.5 # sustain 1 # cut 2 # hpf 3000 # hpq 0.15 # lpf 1000 # lpq 0.1  # room 0.5 # orbit 1
+
+  --d6 $ ccs
+
+
+--
+--TRANCE
+
+hush
+
+setcps (137/60)
+
+do
+  let drums = stack [s "99bd:1" # cut 1, s "99sd", s "cp:1", s "hh hh 99hh:1 hh"]
+  let bass = s "~ ~ superchip ~" # voice 0.5 # n "<c2 e2 f2 <d2 g2>>/4" # legato 3 # cut 1 # attack 0 # sustain 1 # release 1 # lpf 1500 # lpq 0.1
+  let scaley = every 2 rev $ degradeBy 0.25 $ n $ scale "majPent" "-7 .. 0"
+  let melody = superimpose (slow 2 . (# lpf 500)) $ slow 4 $ scaley # s "supersaw"
+  d1 $ stack [drums, bass, melody] |*| gain 0.7
+
+
+----------------
+
+setcps (110/60)
+
+do
+  let drums = stack [s "99bd" # gain "<1.05 0.95 1 0.95>" # lpf 500 # cut 1 # room 0.5 # orbit 1, s "~ [~ 99sd/2] ~ ~", s "~ [99hh/2 99hh/8] 99hh"]
+  d1 $ stack [drums]
