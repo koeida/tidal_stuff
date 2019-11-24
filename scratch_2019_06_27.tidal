@@ -1,0 +1,112 @@
+hush
+
+-- elephant song
+
+setcps 0.5
+
+d1 $ every 3 (slow 2) $ striate 64 $ (s "ravemono" # speed 0.1)
+  # lpf (range 500 3000 (slow 2 sine))
+
+do
+  let hhtrip = fast "<2 2 2 4>" $ n "0 0 <0 2>" # s "99hh" |*| gain "1.2 0.9 0.8"
+  let hh = every 5 (const $ hhtrip) $ fast "<2 2 2 4>" $ n "0 0 <0 2> 0" # s "99hh" |*| gain "1.2 0.9 1 0.8"
+  let bd = s "~ 99bd" # n 2 # speed 0.25
+  let sd = s "99sd/2 ~" # speed 0.25
+  let bdf = s "99bd(5,8)" # n 1
+  d2 $ stack [hh, bd, sd, bdf] # orbit 2 # room 0.5 |*| gain 1.3
+
+
+-----boohay
+
+do
+  let boohay = slow 0.5 $ loopAt "<1 0.5>/2" $ s "ades3" # n 1 # cut 1 # delay 1 # delaytime 0.25 |*| gain 1.4
+  let bd = every 3 (fast 2) $ s "[~ 99bd] 99bd*<1 1 1 2>" # n 1
+  let hh = s "99hh*<8 8 8 6>" |*| gain "<0.9 1> 0.8"
+  let sd = s "99sd/2" # n 1 |*| gain 0.8
+  let cp = s "cp/2" |*| gain 0.8
+  d1 $ stack [boohay, bd, hh, sd] # room 0.25 |*| gain 1.1
+
+hush
+
+---------
+
+--NOPE
+
+do
+  let tec =  jux ((# speed 0.5) . rev) $ every 3 rev $ s "techno(5,8,2)" # n (run 8)
+  let m = off 0.25 (# speed 1.5) $ s "moog*2" # n "<0 1 2 3>/2" # crush 3 # lpf 1500 # cut "-1"
+  let bd = s "99bd*<2 4 2 8>"
+  let hh = s "99hh*8" # gain 0
+  d1 $ stack [tec, m, bd, hh] # room 0.25 |*| gain 0.9
+
+
+hush
+
+
+-----
+--this kinda worked
+
+setcps 1
+
+do
+  let dropper s2 = whenmod 16 8 (const $ s2)
+  let summerinst = s "superchip" # legato 0.5 # voice 0.1 # lpf (range 500 1500 (slow 2 sine))
+  let summer = juxBy 0.5 ((|-| n 14) . slow "<2 4>" . rev) $ every 3 rev $ fast 2 $ gain "1*<1 2 1 4> 1*<1 2 1 4>" # n ("<30 33 37>" + "{0 2 7}%8") # summerinst
+  let bd = dropper (s "") $ s "99bd*<1 1 1 2> ~"
+  let hhc = s "99hh*4" # n "0 0 <0 0 1> 0" # gain "0.9 1.1 0.9 1"
+  let hh = dropper (hhc) $ fast "<2 2 2 4 2 2 2 3>" $ hhc
+  let sd = dropper (s "") $ "~ 99sd/2"
+  let cp = dropper (s "") $ "~ cp/2"
+  d1 $ stack [summer, bd, hh, sd, cp] # room 0.25
+
+
+-------------
+
+hush
+
+:t chop
+
+do
+  let nrange = "20" + "<0 5 7 9>/2"
+  let ns = "[0 2 <7 9>/4]" - nrange
+  let mel = jux (rev . fast 2) $ n ns # s "superchip" # voice 0.5
+  let bass =  n ("0" - nrange) # s "supersquare" # voice 0.1
+  let d = s "99bd(3,8,<0 2 3>)" # n 12 # gain "1 1 1.1"
+  let hh = whenmod 16 8 (const $ s "") $ fast "<2 2 2 1>" $ n "3 3 <3 2> 3" # s "99hh" |*| gain "0.9 1 0.9 1.1"
+  d1 $ stack [mel, bass, d, hh] # room 0.1
+
+------------
+
+
+hush
+
+d1 $ s "" -- $ s "superchip(3,6,<0 1 2>)" # n ("-20" + "0 5 7") # gain (range 1 1.5 saw) # voice 0.6 # hpf 500 # hpq 0.25
+
+d2 $ whenmod 16 14 (const $ s "") $
+     stack [ s "99bd ~ ~ 99bd/3 ~ ~" # n 0
+           , fast 2 $ n "0 0 <0 0 4 0 0 7*4>" # s "99hh" |*| gain "1"
+           , every 6 (const $ (gain "0 1 0 0 1 1*4" # s "99sd")) $ s "~ ~ ~ ~ 99sd/2 ~"
+           ] |*| gain 1.2 # room 0.25
+
+do
+  let dropp s' = whenmod 16 12 (const $ s')
+  let only w m s' = whenmod w m (const $ s') $ s ""
+  let res = only 16 12 $ slow 4 $ zoom (0.75,1) $ striate 64 $ s "res"
+  let bd = s "99bd*<1 2 1 4> ~"
+  let hh = s "99hh*<4 8 4 16>"
+  let sd = s "~ 99sd/2"
+  let cp = s "~ cp/2"
+  d1 $ stack [res]
+  d2 $ dropp (s "") $ stack [bd, hh, sd, cp]
+
+
+hush
+
+---amb
+
+d3 $ off 0.5 ((# speed "<1.25 0.75>/4") . rev) $ slow 32 $ (rev $ striate' 64 (1/4) $ s "funeral:5"
+  # delay 0.75 # delaytime 0.5
+  # lpf (range 500 3500 (slow 16 sine)))
+  # lpq (range 0 0.25 (slow 8 sine))
+
+d4 $ s "" --loopAt 32 $ (s "99arpys:6" # speed 1.25) # hpf 1500 # gain 1.2

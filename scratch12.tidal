@@ -4,7 +4,7 @@ hush
 
 d1 $ slow 2.831 $ s "99atmos:5" # gain 0.8
 
-d2 $ stack [ gain "<[1*<8 8 4> ~][1/2 ~]>" # s "99bd:12" # lpf 1500 # speed 0.9 |*| gain (scale 0.9 1.5 saw)
+d2 $ stack [ gain "<[1*<8 8 4> ~][1/2 ~]>" # s "99bd:12" # lpf 1500 # speed 0.9 |*| gain (range 0.9 1.5 saw)
            , gain "<[~ 1][~ 1/2]>" # s "99atmos" # cut 2 # n "<0 1 2 3 4 5>"
            , gain "<[1 ~][1 ~]>" # s "99atmos" # cut 2 # gain 0
            , gain "1*<4 4 4 8>" # s "99hh"
@@ -122,13 +122,18 @@ hush
 do
   let arpyspeed = 8
   let arpyspeed2 = 7
-  d1 $ juxBy 0.5 (# up "0") $ slow 64 $ striate' 256 (1/64) $ s "songone*2" # hpf (scale 2000 3000 (slow 8 sine)) # gain 1.5 # up "-7"
-  d2 $ juxBy 0.5 (# up "0") $ slow 64 $ striate' 256 (1/64) $ s "songone*2" # lpf (scale 1500 3000 (slow 6 sine)) # gain 1.5 # up "-7"
+
+
+d1 $ juxBy 0.5 (# up "0") $ slow 64 $ striate' 256 (1/64) $ s "songone*2" # hpf (range 2000 3000 (slow 8 sine)) # gain 1.5 # up "-7"
+
+  --d2 $ juxBy 0.5 (# up "0") $ slow 64 $ striate' 256 (1/64) $ s "songone*2" # lpf (scale 1500 3000 (slow 6 sine)) # gain 1.5 # up "-7"
+
+
   d3 $ slow arpyspeed $ s "funeral:5"
-    # lpf (scale 500 2000 (slow (arpyspeed * 2) sine))
-    # lpq (scale 0 0.2 (slow arpyspeed sine))
+    # lpf (range 500 2000 (slow (arpyspeed * 2) sine))
+    # lpq (range 0 0.2 (slow arpyspeed sine))
     # unit "c" # speed (1/arpyspeed)
-    # gain (scale 0.75 1 (slow (arpyspeed * 4) sine))
+    # gain (range 0.75 1 (slow (arpyspeed * 4) sine))
   d4 $ slow arpyspeed2 $ s "funeral:5"
     # lpf 1000
     # lpq 0.1
@@ -158,7 +163,7 @@ do
              , fast 4 $ s "~ house*<1 2 1 4>" # n 3
              , s "[~ house] [~ house/3]" # n 7
              ]
-  d2 $ degradeBy 0.25 $ slow 8 $ rev $ striate 64 $ s "lfhh:0" # lpf (scale 500 3000 (slow 2 sine)) # lpq 0.1 # gain 0.9
+  d2 $ degradeBy 0.25 $ slow 8 $ rev $ striate 64 $ s "lfhh:0" # lpf (range 500 3000 (slow 2 sine)) # lpq 0.1 # gain 0.9
   d3 $ slow 4 $ rev $ striate 32 $ s "lfhh:0" # lpf 500 # lpq 0.1 # gain 1
 
 
@@ -325,6 +330,7 @@ hush
 ----------------
 
 setcps (160/60)
+-- "seven"
 
 do
   let sil p = whenmod 64 48 (const $ p)
@@ -342,6 +348,7 @@ d1 $ s "99bd"
 
 
 ---------------------
+--"using the microwave"
 
 
 setcps (40/60)
@@ -577,7 +584,7 @@ do
   d1 $ sometimes rev $ fast "<1 2 1 4>" $ sound "superchip(3,5)" # n (cP "[]" "notes") # crush 2 # lpf 2500
 
 
-
+hush
 
 :t n
 

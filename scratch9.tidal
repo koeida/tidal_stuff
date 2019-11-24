@@ -11,6 +11,9 @@ d3 $ s "99hh*<4 4 8>"
 hush
 
 --------------------
+--"not gonna kick us out"
+
+setcps 0.75
 
 do
   d1 $ slow 8 $ striate 64 $ s "pegarp:3" # speed 0.4 # gain 1.2
@@ -18,7 +21,7 @@ do
            [ every 8 (const $ s "") $ sometimes rev $ fast "<1 2>" $ s "99bd:10(3,4)>" # cut 2
            , ((1/1024) ~>) $ every 3 (slow 2) $ s "99sd:13(<3 5>,8)" # cut 2
            , slow 8 $ striate "<16 32 8 32>" $ s "<99hh*8>" # speed 0.1
-           , s "industrial:1*<4 8 8 16>" # gain (scale 1 1.4 (slow 4 sine))
+           , s "industrial:1*<4 8 8 16>" # gain (range 1 1.4 (slow 4 sine))
            , every 2 (const $ every 3 rev $ striate 8 $ s "print:9" # speed "<0.8 1 0.8>") $ s ""
            ]
 
@@ -28,7 +31,7 @@ do
   d2 $ whenmod 16 14 (const $ s "<~ [99bd*4 99bd*8]>" # cut "-1") $ stack
                         [ s "99bd(3,4)" # cut 2
                         , ((1/1024) ~>) $ every 3 (slow 2) $ s "~ 99sd:13" # cut 2
-                        , s "industrial:1*<4 8>" # gain (scale 1 1.4 (slow 4 sine))
+                        , s "industrial:1*<4 8>" # gain (range 1 1.4 (slow 4 sine))
                         ]
   d1 $ slow 4 $ striate 32 $ s "pegarp:3" # speed 0.4 # gain 1.2
 

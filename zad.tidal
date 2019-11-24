@@ -1,0 +1,9 @@
+d1 $ s "99bd:2*2 99bd:2 99bd:2 99hh*20"
+
+d2 $ s "<99hh*8 99hh*16>"
+
+d3 $ n "c3*4 g3*3" # s "superchip" # voice "<0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1>"
+
+d3 $ every 3 (rev) $ n (arp "up" "c3'maj'4 g3'maj'3") # s "superchip" # voice "<0.8 0.7>"
+
+hush

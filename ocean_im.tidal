@@ -1,0 +1,105 @@
+
+--They pass the p1 param to velocity, which is only used on superpiano to control how hard keys are hit?
+--He does seem to use it on drums and shit too, but dunno what that param is.
+
+hush
+
+p01 p1 = do
+  d1 $ stack
+    [ s "99bd" # n 1
+    , s "~ [~ 99sd/2]"
+    , s "~ [~ cp/2]"
+    , s "99hh*4" |*| gain ("0.9 1.1 0.8 1" * p1)
+    ] |*| gain 1.1
+
+p02 p2 = do
+  let ns = n ("<0 [0, ~ ~ 3 0] 0 [0 . 0 0]>" - 24 + "<0 2 -3 1 5>/4")
+  d2 $ ns # s "supersaw" # velocity 0.75
+
+
+do
+  let dyn = 0.9 :: Pattern Double
+  let d = (*dyn)
+  mapM_ (id) [hush
+    ,  p01 $ d 0.9
+    ,  p02 $ d 1.1
+    ]
+
+
+
+d1 $ mask ("1 1 ~ 1" :: Pattern Bool) $ stack [ s "print*4"
+           , s "industrial*8"
+           ] # n (run 8)
+
+hush
+
+
+--Masks: They definitely make the striatey samples sound better.
+
+do
+  let fun = juxBy 0.5 (rev . hurry 2 . (# lpf 1000) . (# lpq 0.25)) $ slow 8 $ rev $ striate "64" $ s "funeral" # lpf (range 500 1500 (slow 8 sine)) # lpq 0.2
+  let d = stack [ s "99bd ~", s "~ 99sd/2", fast 2 $ s "<[~ 99hh*2] [~ 99hh*3] [~ 99hh*8] [~ ~ 99hh*2 99hh*1]>"]
+  d1 $ mask ("[0 1] 1 [1 0] 1") fun
+  d2 $ d
+
+
+
+d1 $ sound (cat ["sn*8", "[cp*4 bd*4, hc*5]"]) # n (run 8)
+
+d1 $ s (mask ("1 1 1 ~ 1 1 ~ 1" :: Pattern Bool)
+  (cat ["sn*8", "[cp*4 bd*4, bass*5]"] ))
+  # n (run 8)
+
+  d1 $ s (mask ("1 ~ 1 ~ 1 1 ~ 1" :: Pattern Bool)
+  (cat ["can*8", "[cp*4 sn*4, jvbass*16]"] ))
+  # n (run 8)
+
+hush
+
+setcps 0.25
+
+setcps (190/60/16)
+
+do
+  let lpfs l h t = lpf (range l h (slow t sine))
+  let hpfs l h t = hpf (range l h (slow t sine))
+  let onlywhen c s' = every c (const $ s') $ s ""
+  let dropon x = every x (const $ s "")
+  let voc = s "funeral*<1 4 1 2>" # delay 0.5 # delaytime 0.5 # n "<3 1 0>/3"
+  let v = (striate 4 $ voc # cut 1 # hpfs 2500 3500 8 # hpq 0.25)
+  let v2 = slow "<2 4>/4" $ (striate 16 $ voc # cut 2 # lpfs 500 2500 4 # lpq 0.2)
+  let ds = stack [fast 2 $ s "99bd(5,8)" # n 2, fast 4 $ n "0 0 <0 1> 0" # s "99hh" |*| gain "1.1 0.9 1 0.8"]
+  let ds2 = stack [every 3 rev $ fast 4 $ s "<99bd(3,8,<2 3 4>) ~ [~ 99bd*<2 4>] ~>" # n 2 |*| gain 1.25, fast 4 $ s "99sd(3,8,<0 1>)" # n 2, fast "<16 8 16 4>*4" $ s "99hh*4" |*| gain "1.1 0.9 1 0.8"] # room 0.25
+  d1 $ degradeBy 0.5 $ every 3 rev $ fast 2 $ stack [striate 1 $ v2, striate 1 $ v] # speed "1.25" # orbit 1
+  d2 $ ds2 # orbit 0
+
+
+hush
+
+-------
+
+setcps (140/60/16)
+
+hush
+
+do
+  let lpfs l h t = lpf (range l h (slow t sine))
+  let hpfs l h t = hpf (range l h (slow t sine))
+  let onlywhen c s' = every c (const $ s') $ s ""
+  let dropon x = every x (const $ s "")
+  let voc = s "dragon*<1 4 1 2>" # n 1 |*| gain 1.5
+  let v = (striate 2 $ voc # cut 1 # hpfs 2500 3500 8 # hpq 0.25)
+  let v2 = slow "<2 4>/4" $ (striate 16 $ voc # cut 2 # lpfs 500 2500 4 # lpq 0.2)
+  let ds = stack [fast 2 $ s "99bd(5,8)" # n 2, fast 4 $ n "0 0 <0 1> 0" # s "99hh" |*| gain "1.1 0.9 1 0.8"]
+  let ds2 = stack [every 3 rev $ fast 4 $ s "<99bd(3,8,<2 3 4>) ~ [~ 99bd*<2 4>] ~>" # n 2 |*| gain 1.25, fast 4 $ s "99sd(3,8,<0 1>)" # n 2, fast "<16 8 16 4>*4" $ s "99hh*4" |*| gain "1.1 0.9 1 0.8"] # room 0.25
+  d1 $ every 3 rev $ fast 0.25 $ stack [striate 1 $ v2, v] # speed "1" # orbit 1
+  d2 $ ds2 # orbit 0
+
+
+
+hush
+
+
+--------
+
+d1 $ juxBy 0.5 (rev . fast 2) $ fast 4 $ s "superchip(5,7,<2 3 4>)" # n ((fmap (fromIntegral . floor) (sine * 5) + "-15" + "<0 7 5 12>" + "[0,<-7 -5>]")) # voice 0.5

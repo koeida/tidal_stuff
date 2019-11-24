@@ -4,20 +4,35 @@ hush
 
 setcps (80/60)
 
-setcps (40/60)
+setcps (240/60/4)
 
 --off 0.5 (rev . (# hpf 3000) . (# hpq 0.1))
 
 do
+  let onlywhen w m s' = whenmod w m (const $ s') $ s ""
   let sumnotes = "<[0 7 <<3 ~> ~> 12 <17 15> 24 <22 ~> <24 ~>] <<10 12>*<6 <2 3>> ~ <10 17>*<3 6 8> <<~ 0> 15*<8 3>> [36 24 19 <~ 10>]>>>"
   let sumchip = s "superchip" # legato "<1 0.5>/4" # voice 0.1 # lpf (range 500 2500 (slow 16 sine)) # lpq 0.25
   let drop s' = whenmod 80 65 (const $ s')
   let doodly = n ( sumnotes + "<-12 0 12>/2" + "[-2,-14]") # sumchip |*| gain 0.8
-  d1 $ off 0.25 (|+| n "<7 -7>/4") $ degradeBy 0.25 $ fast "<1 2>/8" $ doodly # orbit 1 # room 0.25
-  d2 $ jux (rev) $ off 0.25 (# speed 1.5) $ slow "<1 2>" $ s "dr_few(<3 5 3>,8,3)" # n "<0 1 2 3 4>" # gain 1.2 # speed 1.25 # lpf 2500 # lpq 0.25
-  d3 $ off 0.25 (# speed 0.5) $ every 3 (rev) $ fast "<1 4 1 8>" $ s "99bd:3" |*| gain "<1.5 1.25 1 0.75>"
-  d4 $ s "cp*<2 4 2 8>" |*| gain "1.25 1 1.1 0.9"
-  d5 $ s ""
+  let hh = s "99hh*<4 4 8 16 4 4 8 32>" # gain "1.2 0.9 1 0.8"
+  let bd = every 3 (slow 2) $ s "99bd*<2 4> ~" # n 4
+  let sd = s "~ 99sd*<1 1 1 4>" # n 5
+  let cp = onlywhen 4 1 (s "~ cp") # gain 1.2
+  d1 $ s "" --off 0.25 ((# hpf 3000) . (# legato 1)) $ doodly # orbit 1 # room 0.25 # leslie 1 # lrate 2.7 # lsize 1.5 # tremolodepth 0.5 # tremr 1.25 # delay 0.5 # delayt 0.5 # delayfb 0.25
+  d2 $ stack [hh]
+  d3 $ superimpose (rev . (# speed "<0.5 1.25 0.5 1>")) $ rev $ slow 8 $ striate' 128 (1/16) $ s "crow*8" # speed 0.75 # lpf 1500
+  d4 $ slow 1 $ s "99bd*<1 1 1 2> ~" # n 2 # lpf 1500 # gain 1.5 # room 0.5
+  d5 $ slow 2 $ s "~ 99sd*<1 2 1 <2 4>>" # n 2 # gain 1.5 # room 0.5
+  d6 $ slow 16 $ rev $ striate 128 $ s "funeral" # speed 0.5 # lpf 500 # gain 1.25 # crush 3
+  d7 $ slow "<2 4>" $ every 3 rev $ striate 16 $ s "print" # n "<9 8>/2" # gain 1.25
+  d8 $ s "industrial" # n "<2 3 4>"
+
+hush
+
+  --d2 $ stack [hh, bd, sd, cp]
+
+
+:t distort
 
 d1 $ stack
       [
@@ -30,3 +45,24 @@ d2 $ stack [ s "99bd:3*<1 1 1 2> ~" |*| gain "<1.1 0.9 1.2 0.9>"
            , s "~ cp/2"
            , slow "<2 0.5 2 1>" $ s "99hh 99hh 99hh:3 99hh" |*| gain "1.2 0.9 1 0.9"
            ] |*| gain 1.2
+
+
+------------
+
+
+setcps (130/60/4)
+
+hush
+
+--off 0.5 (rev . (# hpf 3000) . (# hpq 0.1))
+
+do
+  let sumnotes = "<[0 7 <<3 ~> ~> 12 <17 15> 24 <22 ~> <24 ~>] <<10 12>*<6 <2 3>> ~ <10 17>*<3 6 8> <<~ 0> 15*<8 3>> [36 24 19 <~ 10>]>>>"
+  let sumchip = s "superchip" # legato "<1 0.5>/4" # voice 0.1 # lpf (range 500 2500 (slow 16 sine)) # lpq 0.25
+  let drop s' = whenmod 80 65 (const $ s')
+  let doodly = n ( sumnotes + "<-12 0 12>/2" + "[-2,-14]") # sumchip |*| gain 0.8
+  d1 $ off 0.25 (|+| n "<7 -7>/4") $ degradeBy 0.25 $ fast "<1 2>/8" $ doodly # orbit 1 # room 0.25
+  d2 $ jux (rev) $ off 0.25 (# speed 1.5) $ slow "<1 2>" $ s "dr_few(<3 5 3>,8,3)" # n "<0 1 2 3 4>" # gain 1.2 # speed 1.25 # lpf 2500 # lpq 0.25
+  d3 $ off 0.25 (# speed 0.5) $ every 3 (rev) $ fast "<1 4 1 8>" $ s "99bd:3" |*| gain "<1.5 1.25 1 0.75>"
+  d4 $ s "" |*| gain "1.25 1 1.1 0.9"
+  d5 $ s ""

@@ -1,0 +1,45 @@
+d1 $ whenmod 16 8 (const $ slow 8 $ striate 32 $ s "funeral:1" # lpf 1500 # lpq 0.1)
+  $ (0.25 ~>) $ (slow "<4 8>" $ rev $ striate 32 $ s "funeral") # cut 1
+
+d2 $ stack [ every 4 (const $ s "") $ every 3 rev $ gain "1(5,8,<3 5 8>)" # s "99bd:2"
+          , every 4 (const $ s "") $ gain "~ [1*4 1]/2" # s "99sd"
+          , gain "1 1*2 <0 1> 1*<4 8 4 16>" # s "99hh" |*| gain "1 1.1 0.9 1.2"]
+
+
+--------
+
+
+d1 $ (0.25 ~>) $ (slow "<4 8>" $ rev $ striate 32 $ s "funeral") # cut 1
+
+d2 $ stack [ every 4 (const $ s "") $ every 3 rev $ gain "1(5,8,<3 5 8>)" # s "99bd:2"
+           , every 4 (const $ s "") $ gain "~ [1*4 1]/2" # s "99sd"
+           , gain "1 1*2 <0 1> 1*<4 8 4 16>" # s "99hh" |*| gain "1 1.1 0.9 1.2"]
+
+hush
+
+d1 $ seqPLoop [ (0, 16, slow 8 $ striate 32 $ s "funeral:1" # lpf 1500 # lpq 0.1 # cut 1)
+              , (8, 16, slow 8 $ s "~ 99bd*4")
+              --, (16, 17, s "99bd*4")
+              --, (17, 17+8, (0.25 ~>) $ stack [s "99bd*4",(slow 8 $ rev $ striate 64 $ s "funeral") # cut 1])
+              ]
+
+d1 $ (slow 4 $ rev $ striate 128 $ s "funeral:1") # lpf 1500 # lpq 0.1 # cut 1
+
+d2 $ s "99bd"
+
+hush
+
+do
+  d1 $
+  d2 $ s ""
+
+
+do
+  d1 $ (0.25 ~>) $ (slow 8 $ rev $ striate 64 $ s "funeral") # cut 1
+  d2 $ s "99bd*4"
+
+
+
+
+
+hush

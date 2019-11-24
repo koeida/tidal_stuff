@@ -1,5 +1,5 @@
 do
-  d1 $ slow "<2 4 8>" $ striate "<32 64>" $ s "nloop:3" # gain (scale 0.75 2 (fast 2 sine))
+  d1 $ slow "<2 4 8>" $ striate "<32 64>" $ s "nloop:3" # gain (range 0.75 2 (fast 2 sine))
   d2 $ stack [ every 5 (slow 2) $ every 3 rev $ gain "<[~ 1 ~ 1*<4 4 8>][~ 1*<2 2 0> ~ ~]>" # s "99bd:1" # cut 2
              , s "99sd*<1 3 1 4> ~ 99sd/2 ~"
              , every 3 (const $ n "6? [~ 8*2] [8 ~] 4*8" # s "99hh") $ s "99hh:0*4"

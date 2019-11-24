@@ -1,10 +1,96 @@
+---------------
+-- "when I wake up"
 
+setcps 0.75
+
+hush
+
+
+-- drums on the first part are suck exept for the whoosh
+-- for the second part, the drums are better, but
+-- make the snares whoosh in dubbylike from zero gain to full gain in the current silence in [~ 99sd*<1 2>]
+
+do
+  d1 $ seqPLoop [ (0, 24, slow "<2 4 8>" $ striate "<32 64>" $ s "nloop:3" # gain (range 0.75 2 (fast 2 sine)))
+               , (25, 27, s "<99snap*2 [99snap*2 ~ 99snap*2 ~]>" # gain 1)
+               , (27, 51, rev $ slow "<2 4 2 8>" $ striate "<64 128>" $ s "nloop:3" # gain (range 0.75 2 (fast 2 sine)) # lpf (range 500 6000 (slow 8 sine)) # lpq 0.2)
+               , (51, 53, s "<99snap*2 [99snap*2 ~ 99snap*2 ~]>" # gain 1)]
+  let tappy x = superimpose ((x ~>) . (degradeBy 0.75) . (# gain 1.1))
+  let tapback x = superimpose ((x <~) . (degradeBy 0.85) . (# gain 1.1) . (# n 8))
+  d2 $ seqPLoop [(0,24, whenmod 6 4 (const $ rev $ striate "<4 8 16 8 32>" $ s "<bassdm ~>" # gain 1.5)
+                  $ stack [ tapback (1/16) $ every 3 (slow 2) $ s "99hh 99hh 99hh:3 99hh" # gain 1
+                          , every 5 (rev) $ s "99bd:2*<2 4 2 8>"
+                          , tappy (1/8) $ every 3 (fast 2) $ s "<[~ 99sd][~ 99sd*2 ~ 99sd]>"
+                          ])
+                ,(25, 27, s "")
+                ,(27, 51, stack [ every 3 (slow 2) $ s "<[99bd*<1 1 1 4> ~][99bd 99bd*<1 2>]>" # cut 2
+                                , ((1/128) ~>) $ slow 2 $ within (0, 0.5) (# gain (range 0 1.4 (fast 0.5 saw))) $ s "[[~ 99sd*<4 8>] [99sd*<4 8> ~]] 99sd*<1 2>" # cut 2
+                                , s "99hh*<4>" # gain "1.2 0.9 1 0.8"
+                                ])
+                ,(51, 53, s "")]
+
+---------------------------
+-- "less baffling"
+
+hush
+
+setcps 0.745
+
+let fourth = "1 1 0 0"
+
+let eighth = "[1.2 0] [0 1] [0 0] [0 0]"
+
+
+
+d1 $ every 2 (const $ s "") $ gain eighth # s "99bd" # lpf 500 # n 4
+
+
+let sixteenth = "[1.35 0 0 0] [0 0 1 0] [0 0 0 0] [0 0 0 0]"
+d1 $ every 2 (const $ s "") $ gain sixteenth # s "99bd" # lpf 500 # n 4
+
+d1 $ juxBy 0.5 rev $ off 0.5 ((# speed 0.5) . (rev)) $ chunk 4 (# speed 0.75) $ off 0.5 ((# speed 0.5) . (rev)) $ slow 64
+
+setcps "-1"
+
+setcps 0.75
+
+hush
+
+let effects_old = juxBy 0.5 rev $ off 0.5 ((# speed 0.5) . (rev)) $ chunk 4 (# speed 0.75) $ off 0.5 ((# speed 0.5) . (rev))
+
+let effects = juxBy 0.5 rev
+
+let sixteenth = "[1.35 0 0 0] [0 0 1 0] [0 0 0 0] [0 0 0 0]"
+d2 $ every 2 (const $ s "") $ gain sixteenth # s "99bd" # lpf 500 # n 4
+
+d1 $ slow 64
+  $ striate' 256 (1/64) $ s "songone*2"
+  # hpf (range 2000 3000 (slow 8 sine)) # gain 1.5 # up "-7"
+
+d2 $ every 2 (const $ s "") $ s "[~ 99bd] 99bd" # n 7 # lpf 250 # gain "1.2 1"
+
+
+do
+  d2 $ every 2 (const $ s "") $ ply "<1 2 1 4>" $ s "[~ 99bd] 99bd" # n 7 # lpf 250 # gain "1.2 1"
+  d3 $ gain "[1*2 ~] [1*4 ~] ~ ~" # s "99hh"
+
+  d3 $ slow 2 $ s "~ [99sd ~]" # n 5 # lpf 500
+  d4 $ loopAt 3 $ s "less:2/4" # lpf 500
+  d5 $ every 2 rev $ striate "<4 8 16>" $ (s "99hh*4" # gain (range 0.75 1 (slow 16 sine))) |*| gain 0.75 # orbit 1 # delay 0.75 # delaytime 1
+
+d2 $ s ""
+
+d3 $ s ""
+
+d5 $ s ""
+
+---------------------------
 --- This was the jam with mushka here
+--- "hope to die"
 
 hush
 
 setcps 0.75
-
 
 do
   let quiet p = whenmod 12 8 (const $ p)
@@ -13,5 +99,351 @@ do
   let bassy = striate 8 $ s "peg" # lpf 500 # gain 0.75 # up "<0 1>/2"
   let singing = rev $ slow "<16>" $ striate "<32 64>" $ s "res" # lpf (range 500 2000 $ slow 8 sine) # lpq (range 0 0.1 (slow 4 sine)) # cut 1 # gain 1.2
   let singing2 = slow "32" $ striate "<32>" $ s "res" # cut 2 # gain 0.6 # lpf 500
-  d1 $ stack [drums]
-  --d1 $ stack [crow, drums, bassy, singing]
+  d1 $ stack [crow, drums, bassy, singing]
+
+--------------------------
+
+--FILE 07/11 practice:
+
+hush
+
+setcps (50/60)
+
+d1 $ slow 2 $ n (arp "<up down downup>" ((segment 1 $ cP "[]" "notes") + (segment 1 $ cP "[]" "key")))
+  # s "superchip"
+  # voice 0.1
+  # legato 1
+  # room 0.25
+  # orbit 1
+
+d3 $ whenmod 32 31 (# cut 2) $ whenmod 32 16 (rev . (|+ n 12))
+  $ every 3 (slow 2)
+  $ whenmod 8 4 (off 0.125 (|+ n "<5 7>"))
+  $ fast 2 $ n "c4 [~ e4/4]" # s "superchip"
+  |*| gain "{1.1 0.9 1}%2"
+  # lpf 1000
+  |+| n "{0 <0 5 3>}%2"
+  # lpq 0.125
+  # orbit 1
+  # room 0.125
+  # legato "{2 1 2 1.5}%2"
+
+d2 $ whenmod 32 16 (const $ s "99bd [~ 99bd]" |*| gain 1.25 # room 0.125)
+   $ whenmod 8 6 (const $ chunk 12 (# n 2) $ s "99hh*4" |*| gain "1.15 0.9 1.1 1") $
+     stack [ every 8 (fast 2) $ chunk 4 (# speed 0.95) $ s "99bd:2(3,8)" |*| gain "1 1 1.2"
+           , chunk 12 (# n 2) $ s "99hh*<4 4 4 8>" |*| gain "1.15 0.9 1.1 1"
+           , s "~ cp/2" # lpf 1000
+           , whenmod 32 31 (# cut 2) $ s "~ ~ 99hh 99hh" # gain 0
+           ] |*| gain 1.25
+
+
+-----
+-- FURBY FILE
+-- "coming back to me"
+
+setcps (50/60)
+
+hush
+
+do
+  let furby = striate "<4 8 16>" $ (s "incoming:1" # speed "<1.25 1.125 1 0.75>")
+  let metalnotes = n "0*<1 2> 3 1? <4 5>"
+  let dropper s = whenmod 24 16 (const $ s)
+  d1 $ whenmod 16 12 (const $ furby # room 0.25 # orbit 0) $
+       stack [ juxBy 0.5 (rev . (# speed 0.75)) $ furby
+             , s "bottle(3,8,<2 3 4>)" # n (run 8)
+             , every 3 (fast 2 . rev) $ s "haw:5 <haw:2 haw:3>"
+             , off 0.125 (rev . (# speed 0.75) . (# lpf 1000)) $ metalnotes # s "metal"
+             , every 4 (rev . striate 16) $ s "d:2"
+             , s "99bd:8(3,8)" |*| gain "1.1 1 1.25"
+             , s "99hh*<4 4 8 3 4 16>" |*| gain "1.1 1 0.9 1"
+             ] # room 0.25 # orbit 0
+
+  d1 $ stack [ dropper (s "") $ furby |*| speed 1.25
+             , dropper (s "") $ s "99bd*2"
+             , dropper (s "") $ s "~ 99sd/2"
+             , dropper (s "") $ s "~ 99cp/2"
+             , dropper (s "99bd [~ 99bd]") $ every 3 (fast 2) $ s "99hh*4"
+             , whenmod 24 16 (rev . slow 2) $ juxBy 0.5 (fast 2 . rev) $ slow 2 $ s "supersquare*<8 16>" # n ("<5 3 0>" + "<0 7 12>/4") # lpf 500 # voice 0.2 # lpq 0.125
+             ] # room 0.25 # orbit 0
+
+----------
+
+--This sounds super cool melodically and I like it and want to use it "goofy"
+
+hush
+
+setcps (50/60) -- maybe?
+
+do
+  let nfx = s "superchip" # voice 0.6 # gain 1 # lpf 1500 # lpq 0.25 # orbit 1 # room 0.25
+  d1 $ juxBy 0.5 rev $ juxBy 0.5 ((0.5 ~>) . (|+ n "<5 0>") . fast 4 . (# legato 0.5)) $ every 4 rev $ n (arp "<thumbdownup thumbdown>/2" "<g'min'2 c'min'2>/3") # nfx # cut 2
+  d2 $ (0.5 ~>) $ whenmod 16 8 (const $ s "") $ fast 2 $ stack [s "99bd*<1 1 1 2> ~" # n 8, s "~ 99sd/2", s "~ cp/2" # cut 2]
+  d3 $ (0.5 ~>) $ whenmod 16 8 (const $ s "") $ n "<g2*4 g2*4 g2*4 c3*4>/2" # nfx # legato 1 |*| gain 0.75
+
+
+--------
+-- This worked out really well!
+-- "5678"
+setcps (30/60)
+
+hush
+
+d1 $ off 0.25 ((hurry 2) . (# cut 2)) $ n "<5 4>*<4 8 2>" # s "made" # cut 1 # speed "<0.85 1.25>" # gain 0.9 # room 0.2
+
+d2 $ juxBy 0.5 (rev) $ chunk 4 (# speed 0.9) $ s "hardcore:1(3,8)" |*| gain 1.1
+
+d3 $ s "~ ab" # gain 1.4
+
+d4 $ slow 2 $ s "mash2" # gain 1
+
+d5 $ s "numbers" # n "<5 6 7 8 ~>" # gain 1.1 # speed "<0.9 1 1.25>/5" # lpf (range 1000 2000 (slow 8 sine)) # lpq 0.25 # cut 8
+
+----------------
+-- "koy"
+
+hush
+
+setcps (30/60)
+
+d1 $ whenmod 8 4 (juxBy 0.5 (rev . (# speed 1.125)))
+  $ whenmod 16 8 rev $ striate "<12 24>" $ s "koy"
+  # lpf (range 500 3000 (slow 8 sine))
+  # gain 1.25
+  # lpq (range 0 0.2 (slow 16 sine))
+  # begin 0.0
+  # end 0.8
+
+d2 $ whenmod 64 0 (const $ stack [ juxBy 0.5 (rev) $ chunk 4 (# speed 0.9) $ s "bassdm(5,8,<2 3 4>)" |*| gain "1.4 1 1.2 1" # n "{0 1 2 3}%8"
+                                 , every 3 rev $ chunk 8 (# n 3) $ fast "<1 2 1 2>" $ s "99hh:0*<2 4> 99hh:0 <99hh:0*<1 0 4> 99hh:2> 99hh:0" # gain "{1 1.2 1 1.1}%4"
+                                 , (striate "<8 16 <6 4>>" $ s "tacscan:1") # gain (range 0.9 1.125 (slow 8 sine)) # lpf (range 500 3500 (slow 8 sine)) # lpq 0.1
+                                 ]) $
+     stack [ whenmod 4 2 (const $ s "99bd:2 [~ 99bd:2]" # gain 1.25) $ s ""
+           , s "99hh 99hh*<2 4> 99hh 99hh*<1 2 1 8>" # gain "1.2 1 1.1 1"
+           , s "~ 99sd/2"
+           , s "~ cp/2"
+           ]
+
+---------------
+
+setcps (160/60)
+-- "seven"
+
+do
+ let sil p = whenmod 64 48 (const $ p)
+ let onlywhen n1 n2 s' = whenmod n1 n2 (const $ s') $ s ""
+ let lpfs l h s = lpf (range l h (slow s sine))
+ let drum = sil "99hh" $ stack [s "99bd:8" # gain "<1 0.9 1.2 1>", every 8 (fast 2) $ slow 2 $ s "99hh 99hh 99hh:4 99hh" # gain "1 1 1 1.2"] # cut 1 # room 0.5 # orbit 1
+ let bass = slow "<4 8>" $ s "subroc3d*<8>" # n (run 8) # cut 2 # up "<0 2 5 7 5 3 1>" # room 0.2 # orbit 1 # lpf 1000
+ let melody = sil "" $ juxBy 0.5 (slow "<2 4>" . rev) $ slow 4 $ s "superchip*<8 16>" # n (scale "minPent" "0 .. 7") # voice 0.1 # lpf 500 # lpq 0.25
+ let cym = onlywhen 64 60 $ s "<cc ~ cc*2 ~>" # cut 5
+ let noise = onlywhen 64 48 $ s "seawolf" # cut 1 # gain (range 0.5 1.5 (slow 64 sine))
+ d1 $ stack [drum, melody, cym]
+
+---------------------
+--"using the microwave"
+
+
+setcps (40/60)
+
+ hush
+
+ do
+   let sil p = whenmod 32 28 (const $ p)
+   let onlywhen n1 n2 s' = whenmod n1 n2 (const $ s') $ s ""
+   let lpfs l h s = lpf (range l h (slow s sine))
+   let sing = sil "" $ juxBy 0.5 (rev . slow 2) $ slow "<4 4 4 8>" $ rev $ striate 32 $ s "idum" # lpfs 500 3000 8
+   let drums = sil "" $ stack [s "<99bd:1(<3 5>,8) [99bd:1*<1 1 2> ~]>" # gain "<1 0.9 1.2 0.9>", s "~ [99sd:2*<1 2 1 4> ~]", fast "<1 2>" $ s "99hh*<1 2> 99hh 99hh:3 99hh" # gain "1 1 1 1.2"] # room 0.2 # orbit 1 |*| gain "1.25"
+   let bass = sil "" $ slow "<2 4 2 1>" $ s "sf*16" # n (run 16) # lpf 2500 # cut 2 # speed "<1>" # crush 4
+   let song = slow "<4>" $ rev $ striate 32 $ s "funeral"
+   let song2 = slow "<4>" $ rev $ striate 32 $ s "funeral"
+   let sing2 = sil (slow "<1>" $ song # lpf 1000 # crush 3) $ song # lpfs 1000 3000 24 # cut 6 # crush 3 # room 0.25 # orbit 1
+   d1 $ stack [drums, bass, sing2]
+
+--------------------
+--"not gonna kick us out"
+hush
+
+setcps 0.75
+
+do
+  d1 $ slow 8 $ striate 64 $ s "pegarp:3" # speed 0.4 # gain 1.2
+  d2 $ whenmod 16 14 (const $ s "<~ [99bd*4 99bd*8]>" # cut "-1") $ stack
+          [ every 8 (const $ s "") $ sometimes rev $ fast "<1 2>" $ s "99bd:10(3,4)>" # cut 2
+          , ((1/1024) ~>) $ every 3 (slow 2) $ s "99sd:13(<3 5>,8)" # cut 2
+          , slow 8 $ striate "<16 32 8 32>" $ s "<99hh*8>" # speed 0.1
+          , s "industrial:1*<4 8 8 16>" # gain (range 1 1.4 (slow 4 sine))
+          , every 2 (const $ every 3 rev $ striate 8 $ s "print:9" # speed "<0.8 1 0.8>") $ s ""
+          ]
+
+------
+-- "neverending story"
+
+hush
+
+setcps (135/60)
+
+d1 $ fast 1 $ stack [ superimpose (slow "<16>" . rev . (# up "-14") . (# legato 0.5)) $ fast "<1 1 1 2>" $ s "<[supersquare*<1 1 2> ~][supersquare*<1 1 2> ~][supersquare*<1 1 2> ~][supersquare ~ supersquare*2 ~]>"
+                        # legato 1 # n "c5" # lpf (range 2000 3000 (slow 8 sine)) # lpq 0.15
+                    --, sometimes rev $ s "[~ supersquare] ~" # legato 0.5 # n "c5" - "14" # voice 0.1
+                    ] # gain 0.8
+
+
+d2 $ stack [ slow "<2 2 2 4>" $ s "99bd:4(<3 3 5>,8,2)" |*| gain "{1.2 0.95 1.1 1}%8"
+           , s "~ 99sd:12/2"
+           , s "~ cp/4"
+           , s "99hh*<1 1 4>/2"
+           ]
+
+d3 $ s "" -- slow 16 $ rev $ striate 64 $ s "99arpys:12*4" # lpf 500 # gain 0.8
+
+
+-----
+
+--- "all better"
+
+-- elephant song
+
+setcps 0.5
+
+d1 $ every 3 (slow 2) $ striate 64 $ (s "ravemono" # speed 0.1)
+  # lpf (range 500 3000 (slow 2 sine))
+
+do
+  let hhtrip = fast "<2 2 2 4>" $ n "0 0 <0 2>" # s "99hh" |*| gain "1.2 0.9 0.8"
+  let hh = every 5 (const $ hhtrip) $ fast "<2 2 2 4>" $ n "0 0 <0 2> 0" # s "99hh" |*| gain "1.2 0.9 1 0.8"
+  let bd = s "~ 99bd" # n 2 # speed 0.25
+  let sd = s "99sd/2 ~" # speed 0.25
+  let bdf = s "99bd(5,8)" # n 1
+  d2 $ stack [hh, bd, sd, bdf] # orbit 2 # room 0.5 |*| gain 1.3
+
+----
+  -- "and a book"
+
+  setcps 0.60
+
+  d1 $ whenmod 12 11 (const $ s "")
+    $ whenmod 24 12 (juxBy 0.5 ((|-| n 7) . rev))
+    $ whenmod 12 8 (rev . slow 2)
+    $ n (arp "<updown thumbup>" "<e'min'9>")
+    # s "supersaw" # legato 1 # gain 0.8
+    # lpf (range 500 1500 (slow 12 sine))
+    # lpq 0.2
+    # voice 0.8
+    # delay 0.5
+    # delaytime 0.5
+
+  d2 $ stack
+    [ whenmod 12 8 (const $ s "") $ s "<99bd(5,8) 99bd*<2 4 2 8>>" |*| gain 1.2
+    , s "~ 99sd/2"
+    , s "~ cp/2"
+    , whenmod 12 10 (const $ s "<~ [cc*8 ~]>" # gain "[[0.5 0.75 0.85 1] 1]") $ fast "<2 4 1>" $ s "99hh*<4 8 4 16>" |*| gain "1.1 0.9 1 0.85" |*| gain 1.2
+    ] # room 0.25 # orbit 1
+
+-------------
+-- "It won't be long"
+
+do
+  let droppy s' = whenmod 8 6 (const $ s')
+  let bd = gain "<1(5,8,<2 3 4>) 1(5,8,<2 3 4>) 1(5,8,<2 3 4>) 1*8>" # s "bassdm" # n (run 8) # cut 1 # gain "1.1 0.9 1 1"
+  let psr = droppy (s "99hh*<4 32>" # gain "1.1 1 1.2 0.9") $ every 3 (rev) $ s "psr*<4 8 4 16>" # n (run 4) |+| n "<4 8>" # gain "1.1 1 1.2 0.9"
+  let otherd = (0.001 ~>) $ stack [s "~ 99sd/2", s "~ cp/2"] # cut 1
+  let br = slow 4 $ (rev $ striate 16 $ s "crow") |*| gain (range 1 1.25 (slow 8 sine))
+  let altd = stack [ gain "1.1 1 1.2*<1 2> 0.9" # s "99hh", s "~ 99snap/2"]
+  let bass = juxBy 0.5 ((0.125 ~>) . (|- n 7) . fast 2 . (# legato 0.5)) $ slow 2 $ n (arp "<thumbup>" "<g'min'6 g'min'6>/2") # s "superchip" # voice 0.4 # gain 1 # cut 2
+  d1 $ whenmod 32 24 (const $ stack [altd, br]) $ stack [bd, psr, otherd] # room 0.25
+
+
+-------
+-- "waltz with piano melody"
+
+d1 $ juxBy 0.5 ((0.125 ~>) . (|- n 7) . fast 2 . (# legato 0.5))
+  $ slow 2
+  $ n (arp "<thumbdownup thumbdown>/3" "<g'min'6 c'min'6>/2")
+  # s "superchip" # voice 0.6 # gain 1 # cut 2
+  # lpf 1500 # lpq 0.25
+  # orbit 1
+  # room 0.25
+
+d2 $ whenmod 26 24 (const $ s "") $ (0.125 ~>)
+  $ stack [ slow 2 $ s "99bd(5,6,<2 3 4>)" # gain "1.2 1 1 1 1 1" # n 8 -- $ gain "<1*3 1*3 [1*2 1 1]>" # s "99bd"
+          , fast 2 $ s "99hh*<3 6 3 12>"
+          ] # orbit 0 # room 0.25
+
+
+--------
+--"how does it feel"
+--super awesome at the end
+
+hush
+
+setcps (50/60)
+
+d1 $ whenmod 32 16 (const $ whenmod 12 8 (juxBy 0.5 (fast 2 . rev)) $ (0.25 ~>) $ off 0.25 (|+| n 7) $ whenmod 8 6 rev $ n (arp "<down down down up>" ("<b2 b2 b2 d3>" + "'m7'4")) # legato "{1 0.75 0.5}%4" # s "superchip" # gain 0.8 # voice 0.6 ) $
+  stack [ slow 2 $ s "stomp(5,8)" # n "{0 1 2 <3 0>}%4"
+           , s "~ [~ tink/2]"
+           , s "mouth" # n "<0 3>" # cut 1
+           , whenmod 8 6 (juxBy 0.5 (hurry 2 . rev)) $ s "99snap(3,8)" # n "{0 1 2 3 4 5}%3" # gain 0.8
+           , s "ho/8" |*| gain 0.5
+           , every 4 (const $ s "blue" # speed (choose [0.85, 0.9, 0.95, 1]) # gain 0.8 # n (choose [0,1])) $ s ""
+           , whenmod 12 8 (juxBy 0.5 (fast 2 . rev)) $ (0.25 ~>) $ off 0.25 (|+| n 7) $ whenmod 8 6 rev $ n (arp "<down down down up>" ("<b2 b2 b2 d3>" + "'m7'4")) # legato "{1 0.75 0.5}%4" # s "superchip" # gain 0.6 # voice 0.6
+           , every 4 (const $ s "99hh*3") $ every 4 (fast 2) $ fast 2 $ gain "1.1 1 1.25 1" # s "99hh" |*| gain 0.8
+           ] # room 0.25 |*| gain 1.1
+
+----------
+-- This is pretty gd sweet
+-- "flute sample"
+
+setcps (30/60)
+
+hush
+
+d1 $ whenmod 32 16 (# hpf 2000) $ whenmod 16 8 (off 0.25 (# speed 0.5)) $ slow "<1 1 1 2>" $ loopAt 1 $ (every 3 rev) $ striate 8 $ s "nloop"
+
+d2 $ whenmod 32 16 (const $ s "") $ every 3 (ply "2 1 2 4") $ s "feel(5,8,<2 3 4>)" # n "{0 1 5}%3"
+
+d3 $ whenmod 16 8 (const $ stack [ s "99bd:1*<2 4> ~" # gain 1.1
+                                 , chunk 3 (hurry 2) $ fast "<2 2 4>" $ gain "1.2 1 1.1 0.9" # s "99hh"
+                                 , s "~ 99sd/2"
+                                 , s "~ cp/2"
+                                 ]) $ s ""
+
+d4 $ s "99bd:4" # gain 1.2
+
+
+-- "find a way to say that you love me"
+
+setcps (135/60)
+
+d1 $ fast 1 $ stack [ superimpose (slow "<16>" . rev . (# up "-14") . (# legato 0.5)) $ fast "<1 1 1 2>" $ s "<[supersquare*<1 1 2> ~][supersquare*<1 1 2> ~][supersquare*<1 1 2> ~][supersquare ~ supersquare*2 ~]>"
+                        # legato 1 # n "c5" # lpf (range 2000 3000 (slow 8 sine)) # lpq 0.15
+                    --, sometimes rev $ s "[~ supersquare] ~" # legato 0.5 # n "c5" - "14" # voice 0.1
+                    ] # gain 0.8
+
+
+d2 $ stack [ slow "<2 2 2 4>" $ s "99bd:4(<3 3 5>,8,2)" |*| gain "{1.2 0.95 1.1 1}%8"
+           , s "~ 99sd:12/2"
+           , s "~ cp/4"
+           , s "99hh*<1 1 4>/2"
+           ]
+
+hush
+
+-------------------
+
+-- "open season"
+
+hush
+
+setcps (0.65)
+
+d1 $ slow 4 $ rev $ (striate 32 $ s "david:1")
+  # lpf "<10000 2000 10000 500>*4" # room 0.25
+  # lpq "<0 0.125>*4"
+  # hpf "<1500 0 0 0>*4"
+  # hpq "<0.25 0 0 0>*4"
+
+d2 $ --whenmod 12 8 (const $ s "") $
+     stack [ every 8 (const $ s "[99bd 99bd*3] ~" # n 2) $ s "99bd ~" # n 2
+           , every 4 (const $ s "99hh*<16> ~" # lpf 2500) $ s "99hh*8" # lpf 2500
+           ] # room 0.25

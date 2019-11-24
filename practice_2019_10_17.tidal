@@ -1,0 +1,60 @@
+-- "open season"
+
+-- This is pretty solid for now
+
+hush
+
+setcps (0.65)
+
+let stinv = struct . inv
+
+let spin l h = ((# lpf (range l h tri)) . (# lpq 0.2) . (# pan sine))
+
+let spin' = whenmod 16 15 $ spin 300 3500
+
+d1 $ whenmod 20 12 ((# lpf 10000) . (# hpf 0)) $ spin' $ stinv "<[t(3,8)][t f f f f f f f]>" $ slow 4 $ rev $ (striate 32 $ s "david:1")
+  # lpf "<10000 2000 10000 500>*4" # room 0.25
+  # lpq "<0 0.125>*4"
+  # hpf "<1500 0 0 0>*4"
+  # hpq "<0.25 0 0 0>*4"
+
+d2 $ whenmod 20 12 (const $ s "") $ whenmod 12 11 (spin 300 3500) $
+     stack [ every 2 (const $ s "99bd(3,8)" # n 2 |* gain 1.25) $ s "99bd*<1 1 1 2> ~" # n 2 |* gain 1.25
+           , gain "1*<1 4 1 2> 1.1 0.9 1.2" # s "99hh" # lpf 3500
+           , s "~ 99hh:8/3 ~ ~" # lpf 3500
+           , s "~ 99sd/2"
+           , stutWith 4 (1/8) ((|* gain 0.9) . (|* speed "-1")) $ s "~ cc/4" # lpf 1500 # cut 4
+           ] # room 0.25 # size 0.8
+
+d3 $ whenmod 20 12 (const $ s "") $ (0.25 ~>) $ every 4 (# speed "-1") $ every 3 (striate (choose [4, 8, 2])) $ s "crow" # lpf 2500 # lpq 0.25 |* gain 0.8
+
+--------------------
+
+-- we played with this for a long time
+
+
+hush
+
+-- setcps (0.645)
+
+setcps (0.6)
+
+do
+  d1 $ whenmod 12 11 (const $ s "") $ loopAt 0.75 $ striate 4 $ s "dubby*2" |* gain 1 # speed "<1.25 1 1.125>/4" |+ speed "<0.75 0>/12"
+  d3 $ whenmod 12 10 ((|* gain 1.25) . (# n "4")) $ loopAt 2 $ striate 8 $ s "numbers" # n "<1 2 3 4>" |* gain 1.1 |* speed "-0.8" # crush 6
+  d4 $ whenmod 12 10 (const $ s "") $ "~ industrial" # n "<1 4 8>" # lpf 1500 # crush 6 |* gain 1.25
+  d5 $ whenmod 12 10 (const $ s "") $ stutWith 4 (1/8) ((|* speed "0.5") . (|* lpf 1.1) . (|* gain 0.9)) $ s "print*4" # lpf 2500 # n "{1 2 3 4 5 6 7 8}%4" # gain "1.2 0.9 1.1 1" |* gain 1.25 # lpf 2000 # cut 6
+  d6 $ whenmod 12 10 (const $ s "") $ every 3 (const $ s "industrial*2" # n 11 |* gain 1.25) $ fast 2 $ gain "1*1 1.1 1*<0 1> 1.2*<1 2 1 4>" # s "industrial" # n 15 # cut 1 # lpf 1700 # lpq 0.125
+  d7 $ whenmod 12 10 (const $ s "") $ slow 4 $ s "super808" # lpf 500 |* gain 1.25 # accelerate "-0.1"
+  d8 $ s ""
+
+
+-----------
+
+hush
+
+--bpm test
+
+setcps (140/60/4)
+
+d1 $ s "99bd:3*4" # cut 1

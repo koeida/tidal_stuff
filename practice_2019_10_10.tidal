@@ -1,0 +1,38 @@
+setcps 0.85
+
+hush
+
+do
+  let stinv = struct . inv
+  let avoc = (loopAt 4 $ striate' 64 (1/12) $ s "agni2:1") # cut 1
+  let chunker = const $ rev $ avoc |* speed "-1"
+  let chunkvoc = chunk 2 chunker
+  d1 $ whenmod 24 12 ((#hpf 500) . (#hpq 0.25) . (|* gain 1.25)) $ off (1/4) (#lpf 1000) $ stinv "f(2,4,2)" $ chunkvoc $ avoc
+  d2 $ gain "1*4 1.2 1 1.1" # s "99hh" # n 3
+  d3 $ whenmod 12 8 (const $ s "") $ s "99bd(2,4,2)"
+  d4 $ s "~ 99sd/2" |* gain 1.25
+
+-----
+
+setcps (78/60/2) --(0.65) --0.8
+
+
+
+do
+  let stinv = struct . inv
+  d1 $ rev $ slow 4 $ (striate 32 $ s "david:1" # lpf (range 500 2500 (slow 8 sine))) # room 0.25 # lpq 0.0
+  d2 $ whenmod 12 8 (const $ s "") $
+     stack [ every 8 (const $ s "~ [99bd 99bd*3]" # n 2) $ s "~ 99bd" # n 2
+           , every 4 (const $ s "99hh*<16> ~" # lpf 2500) $ s "99hh*8" # lpf 2500
+           ] # room 0.25
+
+hush
+
+do
+  let stinv = struct . inv
+  d1 $ rev $ (slow 4 $ striate 32 $ s "david:1") # lpf (range 500 2500 (slow 8 sine)) # room 0.25 # size 0.8
+  d2 $ --whenmod 12 8 (const $ s "") $
+     stack [ every 8 (const $ s "[99bd 99bd*3] ~" # n 2) $ s "~ 99bd" # n 2
+           , every 4 (const $ s "99hh*<16> ~" # lpf 2500) $ s "99hh*8" # lpf 2500
+           , s "~ 99sd/2"
+           ] # room 0.25

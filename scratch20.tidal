@@ -1,13 +1,21 @@
 -- this was good summer recorded it
 
+
 hush
 
 setcps (127/60)
+
+setcps (130/60)
 
 d1 $ slow 2 $ stack
            [ sometimes rev $ slow "<1 2 1 4>" $ s "superchip(3,8,2)" # legato 0.5 # n (cP "[]" "notes") # voice 0.1 # lpf (range 500 3500 $ slow 8 sine) # lpq (range 0 0.2 $ slow 16 sine)
            , s "~ superchip ~ superchip*<1 2 1 4>" # legato 1 #  n (cP "[]" "notes" - "<12>") # voice 0.1 # lpf (range 500 3500 $ slow 4 sine)
            ] # room 0.25 # orbit 1 |*| gain 1.2
+
+d1 $ slow 2 $ stack
+    [ sometimes rev $ slow "<1 2 1 4>" $ s "superchip(3,8,2)" # legato 0.5 # n "<c5 e5>" # voice 0.1 # lpf (range 500 3500 $ slow 8 sine) # lpq (range 0 0.2 $ slow 16 sine)
+    , s "~ superchip ~ superchip*<1 2 1 4>" # legato 1 #  n ("<c5 e5>" - "<12>") # voice 0.1 # lpf (range 500 3500 $ slow 4 sine)
+    ] # room 0.25 # orbit 1 |*| gain 1.2
 
 
 d2 $ stack [ whenmod 12 8 (const $ s "99bd:4*<4 4 8 2>") $ s "99bd:4*<1 1 1 2> ~" |*| gain "<0.95 1.2 1 1.1>"
@@ -18,10 +26,12 @@ d2 $ stack [ whenmod 12 8 (const $ s "99bd:4*<4 4 8 2>") $ s "99bd:4*<1 1 1 2> ~
 
 --------------
 
+hush
+
 setcps 0.75
 
-d1 $ fast 1 $ stack [ s "~ supersquare ~ supersquare" # legato 1.5 # n (cP "[]" "notes") # lpf 2000 # lpq 0.15
-                    , s "supersquare*<1 1 2> ~ supersquare/2 ~" # legato 1 # n (cP "[]" "notes") - "14" # voice 0.1
+d1 $ fast 1 $ stack [ s "~ supersquare ~ supersquare" # legato 1.5 # n "c5" # lpf 2000 # lpq 0.15
+                    , s "supersquare*<1 1 2> ~ supersquare/2 ~" # legato 1 # n "c5" - "14" # voice 0.1
                     ] # gain 0.6
 
 d2 $ stack [ s "99bd" # lpf 500
@@ -72,13 +82,16 @@ do
 
 hush
 
+
 --we did this with and without the superimpose
+----
+-- "find a way to say that you love me"
 
 setcps (135/60)
 
 d1 $ fast 1 $ stack [ superimpose (slow "<16>" . rev . (# up "-14") . (# legato 0.5)) $ fast "<1 1 1 2>" $ s "<[supersquare*<1 1 2> ~][supersquare*<1 1 2> ~][supersquare*<1 1 2> ~][supersquare ~ supersquare*2 ~]>"
-                        # legato 1 # n (cP "[]" "notes") # lpf (range 2000 3000 (slow 8 sine)) # lpq 0.15
-                    --, sometimes rev $ s "[~ supersquare] ~" # legato 0.5 # n (cP "[]" "notes") - "14" # voice 0.1
+                        # legato 1 # n "c5" # lpf (range 2000 3000 (slow 8 sine)) # lpq 0.15
+                    --, sometimes rev $ s "[~ supersquare] ~" # legato 0.5 # n "c5" - "14" # voice 0.1
                     ] # gain 0.8
 
 

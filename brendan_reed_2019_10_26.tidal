@@ -1,0 +1,149 @@
+setcps 0.8
+
+hush
+
+--Agni 4 loop, speed -0.94, striate 32
+do
+  let spin l h = ((# lpf (range l h tri)) . (# lpq 0.2) . (# pan sine))
+  let spin' = whenmod 16 15 $ spin 300 3500
+  let vocals = spin' $ whenmod 16 12 rev $ loopAt 4 $ striate "16" $ s "agni" # speed "-0.94"
+  d1 $ vocals
+  d2 $ spin' $ stack [ s "99bd:2(3,8)" |* gain 1.2
+             , s "~ 99sd/2"
+             , s "~ cp/2"
+             , s "99hh*<4 8 3 16>"
+             ] |* gain 1.1
+
+
+  d2 $ stack [ "99hh*4" ]
+
+
+----------------
+
+
+setcps 0.7
+
+d1
+  $ sometimes (# speed "-0.95")
+  $ every 3 rev
+  $ striate "<4 8 4 16>"
+  $ s "crow"
+  # n "<0 1 2 3>"
+
+d2
+  $ sometimes (off (1/8) ((# lpf 500) . (# cut 2)))
+  $ fast 1
+  $ s "numbers"
+  # cut 1
+  # n "<0 1 2 <4 8>>"
+  # lpf (range 1500 3000 (slow 8 sine))
+  # lpq (range 0 0.2 (slow 16 sine))
+
+d3 $ stack
+  [ s "99bd:2(3,8)" # speed "0.75" |* gain 1.25
+  , s "~ 99sd/2"
+  , s "~ cp/2"
+  , fast "<1 2>" $ s "99hh*4" |* gain "1 1.2 1 1.25"
+  ]
+
+d3 $ s "99hh*<2 4 3 8>"
+
+
+d3
+  $ stack
+    [ s "~ ~ ~ haw/2" |* gain 1.2
+    , s "~ 99bd*<1 1 1 2>" # n 3
+    , s "99sd/2"
+    , s "cp/2"
+    , s "99hh*16"
+    ] |* gain 0.9
+
+d2 $ s "99hh*4" |* gain 0.2
+
+d2 $ stack
+  [ s "99bd(3,8)"
+  , s "99hh*<2 4 3 8>"
+  ]
+
+d3
+  $ sometimes (|+ n 2)
+  $ stutWith 4 (1/8) (|* gain 0.9)
+  $ off 0.25 (|+ n 2) $ striate 8 $ s "newnotes"
+  # n "<0 1 0 3>"
+  |* gain 1.0
+  |* speed "1"
+
+d1 $ slow 2 $ striate 16 $ s "sitar" |* gain 0.1 # n "<0 1>/4"
+
+------------
+
+hush
+
+-- Brendan Reed likes this one
+
+setcps 0.7
+
+do
+  let stinv = struct . inv
+  let spin l h = ((# lpf (range l h tri)) . (# lpq 0.2) . (# pan sine))
+  let spin' = whenmod 8 6 ( (spin 300 3500) . (fast 2))
+  d1
+    $ juxBy (range 0 1 (slow 4 sine)) ((# lpf 500) . (# cut 2))
+    $ whenmod 16 8 ( (# lpf 1500) . (#lpq 0.25))
+    $ stinv "f(3,8)"
+    $ chunk 2 (|* speed "-1")
+    $ every 3 rev
+    $ fast 1
+    $ loopAt 4
+    $ striate 8 $ s "agni2:1"
+    # cut 1
+    |* gain 1
+  d2 $ spin' $ stack
+    [ every 8 (const $ s "99hh*6") $ gain "1*<1 4 1 2> 1.2 0 1.1*<1 2 1 4>" # s "99hh"
+    , s "99bd(3,8)" # n 1 |* gain 1.25
+    , s "~ 99sd/2"
+    , s "cp*<0 1 0 4 0 2 0 8>"
+    , s "super808/4" |* gain 1.25 # lpf 500
+    ]
+
+d2 $ s "99hh*4" |* gain 0.0
+
+
+
+
+------------
+
+--this was real good
+--be your sickle be your sickle
+
+setcps 0.8
+
+hush
+
+do
+  let stinv = struct . inv
+  d1
+    $ whenmod 8 4 (|* speed "-1")
+    $ (0.5 ~>)
+    $ stinv "<[t f t/2 f]>"
+    $ (0.5 <~)
+    $ chunk 4 ((# lpf 1500) . (# lpq 0.25) . (slow "<1 2>/16"))
+    $ slow "<2 1>/8"
+    $ striate "<8 16>/8"
+    $ s "funeral:0"
+    |* speed "-1"
+    # cut 3
+  d2
+    $ (0.5 ~>)
+    $ stack
+      [ s "<[99bd:0*<1 1 1 4> ~]>" |* gain 1.2
+      , s "99hh*<2 4>" # lpf 3500
+      , s "~ 99sd"
+      , s "~ cp*<1 2 1 4>"
+      ]
+
+      d2
+        $ (0.5 ~>)
+        $ stack [ every 4 (fast 2) $ "99hh(3,8)" # lpf 3500 |* gain 1.2
+                , s "99bd:2" |* gain 1.1
+                ]

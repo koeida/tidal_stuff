@@ -1,0 +1,24 @@
+
+-- I can sorta order spliced samples with slice. Good for little droppy dropps in the middle of the cycle
+
+hush
+
+setcps (130/60/4)
+
+d1
+  $ juxBy 0.5 ((# cut 2) . (# lpf 500) . (|* speed "-1.125"))
+  $ every 3 (fast 2)
+  $ slow 4
+  $ slice 12 "[0*<1 1 8> ~ 1 2] [3*<8 1 1> ~ 4 5] [6*<8 1 1> ~ 7 8] [9*<1 1 8> ~ 10 11]" $ s "funeral" # lpf 1500 # lpq 0.2 # cut 1 # speed "-1"
+
+d2
+  $ stack [ superimpose (# cut 2) $ s "~ 99bd:1*<1 1 4 1> ~ ~" # cut 1 |* gain 1.125
+          , s "[~ tables] ~ ~ ~" # speed "-4" |* gain 1 # lpf 1500
+          , s "99hh*<4 16> ~ 99hh <99hh*2 ~>"
+          , s "~ ~ ~ 99sd/2" |* gain 1.2
+          , s "~ ~ ~ cp/2" |* gain 1.2
+          ] # room 0.25 # size 0.5
+
+------------
+
+d1 $ s ""
