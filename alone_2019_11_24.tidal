@@ -1,0 +1,56 @@
+do
+  let stinv = struct . inv
+  let beat = "1(1,8)"
+  d1 $ stinv beat $ slow 4 $ chunk 4 (fast 2 . rev) $ rev $ striate 32 $ s "agni2" # cut 1 # lpf 1500
+  d2 $ gain beat # s "99bd:2"
+  d3 $ fast 4 $ s "99hh*<4 4 <3 4> <8 2>>" # gain "1 1.1 0.9 1.2"
+  d4 $ s "~ 99sd/2"
+
+hush
+
+do
+  let stinv = struct . inv
+  let ag = (every 3 rev $ striate "<4 16>" $ s "agni2") # gain (range 0.5 1.5 (fast "<1 2>" $ saw)) # cut 1
+  d1 $ superimpose (# n 2) $ s "<99bd 99bd*2>"
+  d2 $ every 4 (const $ s "") $ ag
+  d3 $ slow 4 $ rev $ striate 32 $ s "agni2" # lpf 500
+  d4 $ every 8 (const $ s "") $ s "99hh*<<8 4> 16 6 16>" # gain "1 1.1 0.9 1.2"
+  d5 $ s "~ 99sd/2" |* gain 1.2
+
+
+----------
+
+hush
+
+do
+  d1 $ whenmod 8 4 (fast 2 . (# hpf 500) . (# hpq 0.125)) $ juxBy 0.5 (slow 2) $ sometimes (off (1/8) (# lpf 500)) $ every 3 (fast "<2 <4 8> 3>") $ s "scut(<5 3 6>,8)" # cut 1 |+ up "{1 4 5 2}%8" |+ n "<0 2 5 7>" # n "7" |- up 0
+  d2 $ fast 2 $ s "99hh(<6 6 6 <8 16>>,8)" # gain "1 1.2 0.9"
+  d3 $ superimpose (# n 1) $ s "99bd:12*<2 4>"
+  d4 $ rev $ striate "<<16 8> 32>" $ s "crow" # n "<0 1 2 3>"
+  d5 $ s "~ 99sd/2"
+
+
+do
+  let stinv = struct . inv
+  d1 $ whenmod 8 4 (fast 2 . (# hpf 500) . (# hpq 0.125)) $ juxBy 0.5 (slow 2) $ sometimes (off (1/8) (# lpf 500)) $ every 3 (fast "<2 <4 8> 3>") $ s "scut(<5 3 6>,8)" # cut 1 |+ up "{1 4 5 2}%8" |+ n "<0 2 5 7>" # n "7" |- up 0
+  d2 $ fast 2 $ s "99hh(<6 6 6 <8 16>>,8)" # gain "1 1.2 0.9"
+  d3 $ superimpose (# n 1) $ gain "1*<1 4>" # s "99bd:12"
+  d4 $ rev $ striate "<<16 8> 32>" $ s "crow" # n "<0 1 2 3>"
+  d5 $ s "~ 99sd/2"
+  d6 $ stinv "<t(1,16) t(4,16)>" $ loopAt 2 $ whenmod 8 6 (rev) $ striate 32 $ s "agni" # cut 1 # lpf 1500 # lpq 0.2
+  d1 $ s ""
+
+-------------
+
+hush
+
+setcps (50/60)
+
+do
+  let pat = "t(3,8)"
+  d1 $ struct pat $ s "99bd" # gain "{1 1.2 0.9}%8" |* gain 1.25
+  d2 $ s "~ 99sd/2"
+  d3 $ fast 1 $ s "99hh*<4 8 3 16>" # gain "1 1.1 0.9 1.4"
+  d4 $ whenmod 12 8 (rev) $ loopAt 4 $ striate 32 $ s "agni" # cut 2 |* gain 1
+
+  --d4 $ whenmod 16 8 (|* speed "-1") $ sew (inv pat) (rev $ loopAt 4 $ striate 32 $ s "agni" # cut 2) (s "cp*<8 8 16>" # pan (slow 2 $ sine))
